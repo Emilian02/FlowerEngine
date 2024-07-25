@@ -4,6 +4,7 @@
 
 using namespace FlowerEngine;
 using namespace FlowerEngine::Core;
+using namespace FlowerEngine::Graphics;
 
 void App::Run(const AppConfig& config)
 {
@@ -16,9 +17,15 @@ void App::Run(const AppConfig& config)
     );
     ASSERT(myWindow.IsActive(), "App: failed to create window");
 
+    //init singeltons
+    auto handle = myWindow.GetWindowHandle();
+    GraphicsSystem::StaticInitialize(handle, false);
+
+    //start state
     ASSERT(mCurrentState != nullptr, "App: no current state available");
     mCurrentState->Initialize();
 
+    //run program
     mRunning = true;
     while (mRunning)
     {
@@ -47,7 +54,11 @@ void App::Run(const AppConfig& config)
 
         //rendering
     }
+    //end state
     mCurrentState->Terminate();
+
+    //terminate singletons
+    GraphicsSystem::StaticTerminate();
 
     myWindow.Terminate();
 }
