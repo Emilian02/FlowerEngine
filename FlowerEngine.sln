@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_HelloWindow", "VGP242\01
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FlowerEngine", "Engine\FlowerEngine\FlowerEngine.vcxproj", "{C8B15174-9001-409A-B2A7-885284A43179}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics", "Framework\Graphics\Graphics.vcxproj", "{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -47,6 +49,14 @@ Global
 		{C8B15174-9001-409A-B2A7-885284A43179}.Release|x64.Build.0 = Release|x64
 		{C8B15174-9001-409A-B2A7-885284A43179}.Release|x86.ActiveCfg = Release|Win32
 		{C8B15174-9001-409A-B2A7-885284A43179}.Release|x86.Build.0 = Release|Win32
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Debug|x64.ActiveCfg = Debug|x64
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Debug|x64.Build.0 = Debug|x64
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Debug|x86.ActiveCfg = Debug|Win32
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Debug|x86.Build.0 = Debug|Win32
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Release|x64.ActiveCfg = Release|x64
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Release|x64.Build.0 = Release|x64
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Release|x86.ActiveCfg = Release|Win32
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +65,7 @@ Global
 		{DDF5399B-E800-4FAA-BBBB-4E31641DC351} = {A0644E8D-6DBF-4BE9-96E2-9C6191F50163}
 		{3F565230-DA30-4BA1-8C25-81D8AFF0C8B4} = {CF1B17E5-4445-4BEF-A501-FA6CB0976ABC}
 		{C8B15174-9001-409A-B2A7-885284A43179} = {39387489-FC4A-4845-B204-3C51CD874896}
+		{DAF26EAA-52C7-4BE2-80DD-094E5F5AB23C} = {A0644E8D-6DBF-4BE9-96E2-9C6191F50163}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8761E04-3BE2-4FA0-98C5-194156D48A72}
