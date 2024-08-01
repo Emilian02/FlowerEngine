@@ -45,6 +45,7 @@ namespace FlowerEngine::Graphics
         ID3D11DeviceContext* GetContext();
 
     private:
+        static LRESULT CALLBACK GraphicSystemMessageHandler(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
         ID3D11Device* mD3DDevice = nullptr;
         ID3D11DeviceContext* mImmediateContext = nullptr;

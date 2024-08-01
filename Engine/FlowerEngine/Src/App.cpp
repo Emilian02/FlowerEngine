@@ -5,6 +5,7 @@
 using namespace FlowerEngine;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Graphics;
+using namespace FlowerEngine::Input;
 
 void App::Run(const AppConfig& config)
 {
@@ -20,19 +21,23 @@ void App::Run(const AppConfig& config)
     //init singeltons
     auto handle = myWindow.GetWindowHandle();
     GraphicsSystem::StaticInitialize(handle, false);
+    InputSystem::StaticInitialize(handle);
 
     //start state
     ASSERT(mCurrentState != nullptr, "App: no current state available");
     mCurrentState->Initialize();
 
+    GraphicsSystem* gs = GraphicsSystem::Get();
+    InputSystem* input = InputSystem::Get();
     //run program
     mRunning = true;
     while (mRunning)
     {
         // update
         myWindow.ProcessMessage();
+        input->Update();
 
-        if (!myWindow.IsActive())
+        if (!myWindow.IsActive() || input->IsKeyPressed(KeyCode::ESCAPE))
         {
             Quit();
         }
@@ -52,12 +57,15 @@ void App::Run(const AppConfig& config)
             mCurrentState->Update(deltaTime);
         }
 
-        //rendering
+        gs->BeginRender();
+            mCurrentState->Render();
+        gs->EndRender();
     }
     //end state
     mCurrentState->Terminate();
 
     //terminate singletons
+    InputSystem::StaticTerminate();
     GraphicsSystem::StaticTerminate();
 
     myWindow.Terminate();
