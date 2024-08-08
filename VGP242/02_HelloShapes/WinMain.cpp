@@ -10,7 +10,9 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
     config.appName = L"Hello Shapes";
 
     App& myApp = MainApp();
-    myApp.AddState<ShapeState>("ShapeState");
+    myApp.AddState<StarShapeState>("StarShapeState");
+    myApp.AddState<FishShapeState>("FishShapeState");
+    myApp.AddState<DiamondShapeState>("DiamondShapeState");
     myApp.Run(config);
 
     return (0);

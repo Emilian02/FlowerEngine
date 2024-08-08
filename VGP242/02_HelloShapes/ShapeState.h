@@ -10,7 +10,7 @@ public:
     void Render() override;
 
 protected:
-
+    virtual void CreateShape() {}
 
     struct Vertex
     {
@@ -25,4 +25,49 @@ protected:
     ID3D11VertexShader* mVertexShader = nullptr;
     ID3D11InputLayout* mInputLayout = nullptr;
     ID3D11PixelShader* mPixelShader = nullptr;
+};
+
+class TriangleShapeState : public ShapeState
+{
+public:
+    void Update(float deltatime) override;
+
+protected:
+    void CreateShape() override;
+};
+
+class SquareShapeState : public ShapeState
+{
+public:
+    void Update(float deltatime) override;
+
+protected:
+    void CreateShape() override;
+};
+
+class StarShapeState : public ShapeState
+{
+public:
+    void Update(float deltatime) override;
+
+protected:
+    void CreateShape() override;
+};
+
+class FishShapeState : public ShapeState
+{
+public:
+    void Update(float deltatime) override;
+
+protected:
+    void CreateShape() override;
+};
+
+class DiamondShapeState : public ShapeState
+{
+public:
+    void Update(float deltatime) override;
+
+protected:
+    void CreateShape() override;
 };

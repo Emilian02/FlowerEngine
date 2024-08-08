@@ -4,14 +4,11 @@ using namespace FlowerEngine;
 using namespace FlowerEngine::Math;
 using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Core;
+using namespace FlowerEngine::Input;
 
 void ShapeState::Initialize()
 {
-    // create a simple shape in NDC space (-1/1, -1/1, 0/1)
-    // simple triangle
-    mVertices.push_back({ { -0.5f, 0.0f, 0.0f }, Colors::Red });
-    mVertices.push_back({ { 0.0f, 0.75f, 0.0f }, Colors::Green });
-    mVertices.push_back({ { 0.5f, 0.0f, 0.0f }, Colors::Blue });
+    CreateShape();
 
     auto device = GraphicsSystem::Get()->GetDevice();
 
@@ -131,4 +128,119 @@ void ShapeState::Render()
     UINT offset = 0;
     context->IASetVertexBuffers(0, 1, &mVertexBuffer, &stride, &offset);
     context->Draw((UINT)mVertices.size(), 0);
+}
+
+// triangle shape
+void TriangleShapeState::Update(float deltatime)
+{
+}
+
+void TriangleShapeState::CreateShape()
+{
+    mVertices.push_back({ { -0.5f, 0.0f, 0.0f }, Colors::Red });
+    mVertices.push_back({ { 0.0f, 0.75f, 0.0f }, Colors::Green });
+    mVertices.push_back({ { 0.5f, 0.0f, 0.0f }, Colors::Blue });
+}
+
+// square shape
+void SquareShapeState::Update(float deltatime)
+{
+
+}
+
+void SquareShapeState::CreateShape()
+{
+    mVertices.push_back({ { -0.5f, -0.5f, 0.0f }, Colors::Red });
+    mVertices.push_back({ { -0.5f, 0.5f, 0.0f }, Colors::Green });
+    mVertices.push_back({ { 0.5f, 0.5f, 0.0f }, Colors::Blue });
+
+    mVertices.push_back({ { -0.5f, -0.5f, 0.0f }, Colors::Red });
+    mVertices.push_back({ { 0.5f, 0.5f, 0.0f }, Colors::Blue });
+    mVertices.push_back({ { 0.5f, -0.5f, 0.0f }, Colors::Green });
+}
+
+// star shape
+void StarShapeState::Update(float deltatime)
+{
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::RIGHT))
+    {
+        MainApp().ChangeState("FishShapeState");
+    }
+}
+
+void StarShapeState::CreateShape()
+{
+    mVertices.push_back({ {-0.25f, -0.5f, 0.0f}, Colors::Yellow });
+    mVertices.push_back({ {-0.05f, 0.2f, 0.0f}, Colors::Yellow });
+    mVertices.push_back({ {0.3f, 0.0f, 0.0f}, Colors::Yellow });
+
+    mVertices.push_back({ { -0.3f, 0.0f, 0.0f }, Colors::Yellow });
+    mVertices.push_back({ { 0.05f, 0.2f, 0.0f }, Colors::Yellow });
+    mVertices.push_back({ { 0.25f, -0.5f, 0.0f }, Colors::Yellow });
+
+    mVertices.push_back({ {-0.15f, -0.2f, 0.0f}, Colors::Yellow });
+    mVertices.push_back({ {0.0f, 0.45f, 0.0f}, Colors::Yellow });
+    mVertices.push_back({ {0.15f, -0.2f, 0.0f}, Colors::Yellow });
+}
+
+// fish shape
+void FishShapeState::Update(float deltatime)
+{    
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::RIGHT))
+    {
+        MainApp().ChangeState("DiamondShapeState");
+    }
+    else if (InputSystem::Get()->IsKeyPressed(KeyCode::LEFT))
+    {
+        MainApp().ChangeState("StarShapeState");
+    }
+}    
+     
+void FishShapeState::CreateShape()
+{
+    mVertices.push_back({ {-0.15f, 0.0f, 0.0f}, Colors::Purple });
+    mVertices.push_back({ {0.02f, 0.1f, 0.0f}, Colors::Purple });
+    mVertices.push_back({ {0.02f, -0.1f, 0.0f}, Colors::Purple });
+
+    mVertices.push_back({ {-0.4f, 0.0f, 0.001f}, Colors::AliceBlue });
+    mVertices.push_back({ {-0.2f, 0.2f, 0.001f}, Colors::Aqua });
+    mVertices.push_back({ {-0.2f, -0.2f, 0.001f}, Colors::Aqua });
+
+    mVertices.push_back({ {-0.4f, 0.0f, 0.001f}, Colors::MintCream });
+    mVertices.push_back({ {0.1f, 0.5f, 0.001f}, Colors::LightCoral });
+    mVertices.push_back({ {0.1f, -0.5f, 0.001f}, Colors::LightCoral });
+
+    mVertices.push_back({ {0.05f, 0.0f, 0.001f}, Colors::Purple });
+    mVertices.push_back({ {0.25f, 0.25f, 0.001f}, Colors::MediumPurple });
+    mVertices.push_back({ {0.25f, -0.25f, 0.001f}, Colors::MediumPurple });
+        
+}
+
+// Diamond shape
+void DiamondShapeState::Update(float deltatime)
+{    
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::LEFT))
+    {
+        MainApp().ChangeState("FishShapeState");
+    }
+}    
+     
+void DiamondShapeState::CreateShape()
+{
+    mVertices.push_back({ {-0.2f, 0.0f, 0.0f}, Colors::CadetBlue });
+    mVertices.push_back({ {0.0f, 0.4f, 0.0f}, Colors::White });
+    mVertices.push_back({ {0.0f, 0.0f, 0.0f}, Colors::CadetBlue });
+
+    mVertices.push_back({ {0.0f, 0.4f, 0.0f}, Colors::White });
+    mVertices.push_back({ {0.2f, 0.0f, 0.0f}, Colors::CadetBlue });
+    mVertices.push_back({ {0.0f, 0.0f, 0.0f}, Colors::CadetBlue });
+
+    mVertices.push_back({ {0.2f, 0.0f, 0.0f}, Colors::CadetBlue });
+    mVertices.push_back({ {0.0f, -0.4f, 0.0f}, Colors::White });
+    mVertices.push_back({ {0.0f, 0.0f, 0.0f}, Colors::CadetBlue });
+
+    mVertices.push_back({ {-0.2f, 0.0f, 0.0f}, Colors::CadetBlue });
+    mVertices.push_back({ {0.0f, 0.0f, 0.0f}, Colors::CadetBlue });
+    mVertices.push_back({ {0.0f, -0.4f, 0.0f}, Colors::White });
+
 }

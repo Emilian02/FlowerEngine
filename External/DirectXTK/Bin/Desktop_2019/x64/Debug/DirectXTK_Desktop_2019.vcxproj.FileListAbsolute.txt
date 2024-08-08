@@ -1,1 +1,2 @@
 C:\Users\USUARIO\Source\Repos\FlowerEngine\External\DirectXTK\Bin\Desktop_2019\x64\Debug\DirectXTK.lib
+C:\Users\LCV2242522\Source\Repos\FlowerEngine\External\DirectXTK\Bin\Desktop_2019\x64\Debug\DirectXTK.lib
