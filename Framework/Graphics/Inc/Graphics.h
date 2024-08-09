@@ -6,3 +6,7 @@
 #include "GraphicsSystem.h"
 #include "Camera.h"
 #include "ConstantBuffer.h"
+#include "MeshBuffer.h"
+#include "PixelShader.h"
+#include "VertexShader.h"
+#include "VertexTypes.h"

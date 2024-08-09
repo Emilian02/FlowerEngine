@@ -7,6 +7,7 @@ class ShapeState : public FlowerEngine::AppState
 public: 
     void Initialize() override;
     void Terminate() override;
+    void Update(float deltaTime) override;
     void Render() override;
 
 protected:
@@ -22,9 +23,9 @@ protected:
     Vertices mVertices;
 
     FlowerEngine::Graphics::Camera mCamera;
+    FlowerEngine::Graphics::ConstantBuffer mConstantBuffer;
+    FlowerEngine::Graphics::MeshBuffer mMeshBuffer;
+    FlowerEngine::Graphics::VertexShader mVertexShader;
+    FlowerEngine::Graphics::PixelShader mPixelShader;
 
-    ID3D11Buffer* mVertexBuffer = nullptr;
-    ID3D11VertexShader* mVertexShader = nullptr;
-    ID3D11InputLayout* mInputLayout = nullptr;
-    ID3D11PixelShader* mPixelShader = nullptr;
 };
