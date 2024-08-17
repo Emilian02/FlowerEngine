@@ -16,5 +16,6 @@ protected:
     FlowerEngine::Graphics::MeshBuffer mMeshBuffer;
     FlowerEngine::Graphics::VertexShader mVertexShader;
     FlowerEngine::Graphics::PixelShader mPixelShader;
-
+    FlowerEngine::Graphics::Texture mDiffuseTexture;
+    FlowerEngine::Graphics::Sampler mSampler;
 };
