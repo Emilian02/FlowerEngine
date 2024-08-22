@@ -22,6 +22,7 @@ void App::Run(const AppConfig& config)
     auto handle = myWindow.GetWindowHandle();
     GraphicsSystem::StaticInitialize(handle, false);
     InputSystem::StaticInitialize(handle);
+    DebugUI::StaticInitialize(handle, false, true);
 
     //start state
     ASSERT(mCurrentState != nullptr, "App: no current state available");
@@ -59,12 +60,16 @@ void App::Run(const AppConfig& config)
 
         gs->BeginRender();
             mCurrentState->Render();
+            DebugUI::BeginRender();
+                mCurrentState->DebugUI();
+            DebugUI::EndRender();
         gs->EndRender();
     }
     //end state
     mCurrentState->Terminate();
 
     //terminate singletons
+    DebugUI::StaticTerminate();
     InputSystem::StaticTerminate();
     GraphicsSystem::StaticTerminate();
 

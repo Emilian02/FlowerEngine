@@ -43,6 +43,16 @@ namespace FlowerEngine::Graphics
 		Math::Matrix4 GetPerpectiveMatrix()const;
 		Math::Matrix4 GetOrthographicMatrix()const;
 
+		//Camera movement
+		//3 degrees of freedom for translation
+		void Walk(float distance);
+		void Strafe(float distance);
+		void Rise(float distance);
+
+		//2 degrees of freedom for rotation
+		void Yaw(float radians);
+		void Pitch(float radians);
+
 	private:
 		ProjectionMode mProjectionMode = ProjectionMode::Perpective;
 

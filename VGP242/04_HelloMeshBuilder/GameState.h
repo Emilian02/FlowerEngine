@@ -11,6 +11,8 @@ public:
     void Render() override;
 
 protected:
+    void UpdateCamera(float deltaTime);
+
     FlowerEngine::Graphics::Camera mCamera;
     FlowerEngine::Graphics::ConstantBuffer mConstantBuffer;
     FlowerEngine::Graphics::MeshBuffer mMeshBuffer;

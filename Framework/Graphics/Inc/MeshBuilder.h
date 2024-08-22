@@ -9,6 +9,11 @@ namespace FlowerEngine::Graphics
     public:
         // Cube
         static MeshPC CreateCubePC(float size);
+        static MeshPX CreateCubePX(float size);
+
+        // SkySruff
+        static MeshPX CreateSkyboxPX(float size);
+        static MeshPX CreateSkySpherePX(int slices, int rings, float radius);
         
         // Rectangle
         static MeshPC CreateRectPC(float width, float length, float height);
