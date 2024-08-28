@@ -12,7 +12,8 @@ void GameState::Initialize()
 {
     // create a simple shape in NDC space (-1/1, -1/1, 0/1)
 
-    MeshPX mesh = MeshBuilder::CreateSkySpherePX(30, 30, 100.0f);
+    MeshPX mesh = MeshBuilder::CreateSpherePX(60, 60, 1.0f);
+    //MeshPX mesh = MeshBuilder::CreateSkySpherePX(30, 30, 100.0f);
 
     mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
@@ -103,8 +104,18 @@ void GameState::Render()
     mMeshBuffer.Render();
 }
 
+bool buttonValue = false;
+int intValue = 0;
 void GameState::DebugUI()
 {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::LabelText("TestLable", "This is a cool lable");
+    ImGui::Checkbox("Testbutton", &buttonValue);
+    ImGui::DragInt("TestDragInt", &intValue, 0.05f, 0, 100);
+    if (ImGui::CollapsingHeader("Rotation"))
+    {
+        ImGui::DragFloat("RotationY", &gRotationY, 0.001f);
+        ImGui::DragFloat("RotationX", &gRotationX, 0.001f);
+    }
     ImGui::End();
 }
