@@ -12,22 +12,23 @@ void GameState::Initialize()
 {
     // create a simple shape in NDC space (-1/1, -1/1, 0/1)
 
-    MeshPX mesh = MeshBuilder::CreateSkySpherePX(30, 30, 100.0f);
+    //MeshPX mesh = MeshBuilder::CreateSkySpherePX(30, 30, 100.0f);
+    CreateMesh();
 
     mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
 
-    mMeshBuffer.Initialize<MeshPX>(mesh);
+    //mMeshBuffer.Initialize<MeshPX>(mesh);
 
-    mConstantBuffer.Intialize(sizeof(Matrix4));
+    //mConstantBuffer.Intialize(sizeof(Matrix4));
 
-    //std::filesystem::path shaderFile = L"../../Assets/Shaders/DoTransform.fx";
-    std::filesystem::path shaderFile = L"../../Assets/Shaders/DoTexture.fx";
-    mVertexShader.Initialize<VertexPX>(shaderFile);
-    mPixelShader.Initialize(shaderFile);
+    //shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+    //shaderFile = L"../../Assets/Shaders/DoTexture.fx";
+    //mVertexShader.Initialize<VertexPX>(shaderFile);
+    //mPixelShader.Initialize(shaderFile);
 
-    mDiffuseTexture.Initialize("../../Assets/Images/skysphere/space.jpg");
-    mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
+    //mDiffuseTexture.Initialize("../../Assets/Images/skysphere/space.jpg");
+    //mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
 }
 
 void GameState::Terminate()
@@ -101,4 +102,318 @@ void GameState::Render()
     mConstantBuffer.Update(&wvp);
     mConstantBuffer.BindVS(0);
     mMeshBuffer.Render();
+}
+
+//----------------------------------CUBE------------------------------------
+void CubeMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void CubeMesh::CreateMesh()
+{
+    MeshPC mesh = MeshBuilder::CreateCubePC(1.0f);
+
+    mMeshBuffer.Initialize<MeshPC>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+}
+
+//----------------------------------RECT------------------------------------
+void RectMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void RectMesh::CreateMesh()
+{
+    MeshPC mesh = MeshBuilder::CreateRectPC(1.0f, 1.5f, 2.0f);
+
+    mMeshBuffer.Initialize<MeshPC>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+}
+
+//----------------------------------PLANE------------------------------------
+void PlaneMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void PlaneMesh::CreateMesh()
+{
+    MeshPC mesh = MeshBuilder::CreatePlanePC(2, 3, 0.5f);
+
+    mMeshBuffer.Initialize<MeshPC>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+}
+
+//----------------------------------CYLINDER------------------------------------
+void CylinderMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void CylinderMesh::CreateMesh()
+{
+    MeshPC mesh = MeshBuilder::CreateCylinderPC(8, 1);
+
+    mMeshBuffer.Initialize<MeshPC>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+}
+
+//----------------------------------SPHERE------------------------------------
+void SphereMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void SphereMesh::CreateMesh()
+{
+    MeshPC mesh = MeshBuilder::CreateSpherePC(20, 20, 2.5f);
+
+    mMeshBuffer.Initialize<MeshPC>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTransform.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+}
+
+//----------------------------------SKYBOX------------------------------------
+void SkyBoxMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
+    {
+        MainApp().ChangeState("SkySpehereMesh");
+    }
+}
+
+void SkyBoxMesh::CreateMesh()
+{
+    MeshPX mesh = MeshBuilder::CreateSkyboxPX(100.0f);
+
+    mMeshBuffer.Initialize<MeshPX>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTexture.fx";
+
+    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+
+    mDiffuseTexture.Initialize("../../Assets/Images/skybox/skybox_texture.jpg");
+    mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
+}
+
+//----------------------------------SKYSPHERE------------------------------------
+void SkySphereMesh::Update(float deltaTime)
+{
+    UpdateCamera(deltaTime);
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::ONE))
+    {
+        MainApp().ChangeState("CubeMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::TWO))
+    {
+        MainApp().ChangeState("RectMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::THREE))
+    {
+        MainApp().ChangeState("PlaneMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FOUR))
+    {
+        MainApp().ChangeState("CylinderMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::FIVE))
+    {
+        MainApp().ChangeState("SphereMesh");
+    }
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::SIX))
+    {
+        MainApp().ChangeState("SkyBoxMesh");
+    }
+}
+
+void SkySphereMesh::CreateMesh()
+{
+
+    MeshPX mesh = MeshBuilder::CreateSkySpherePX(30, 30, 100.0f);
+
+    mMeshBuffer.Initialize<MeshPX>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+
+    shaderFile = L"../../Assets/Shaders/DoTexture.fx";
+    mVertexShader.Initialize<VertexPX>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+
+    mDiffuseTexture.Initialize("../../Assets/Images/skysphere/space.jpg");
+    mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
 }

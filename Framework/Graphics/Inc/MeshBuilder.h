@@ -11,7 +11,7 @@ namespace FlowerEngine::Graphics
         static MeshPC CreateCubePC(float size);
         static MeshPX CreateCubePX(float size);
 
-        // SkySruff
+        // SkyStuff
         static MeshPX CreateSkyboxPX(float size);
         static MeshPX CreateSkySpherePX(int slices, int rings, float radius);
         
@@ -19,8 +19,8 @@ namespace FlowerEngine::Graphics
         static MeshPC CreateRectPC(float width, float length, float height);
 
         // Plane
-        static MeshPC CreatePlanePC(float numRows, int numCols, float spacing);
-        static MeshPX CreatePlanePX(float numRows, int numCols, float spacing);
+        static MeshPC CreatePlanePC(int numRows, int numCols, float spacing);
+        static MeshPX CreatePlanePX(int numRows, int numCols, float spacing);
 
         // Cylinder
         static MeshPC CreateCylinderPC(int slices, int rings);

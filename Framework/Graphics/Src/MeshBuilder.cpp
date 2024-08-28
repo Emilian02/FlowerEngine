@@ -314,7 +314,7 @@ MeshPC MeshBuilder::CreateRectPC(float width, float length, float height)
     return mesh;
 }
 
-MeshPC MeshBuilder::CreatePlanePC(float numRows, int numCols, float spacing)
+MeshPC MeshBuilder::CreatePlanePC(int numRows, int numCols, float spacing)
 {
     MeshPC mesh;
     int index = rand() % 10;
@@ -342,7 +342,7 @@ MeshPC MeshBuilder::CreatePlanePC(float numRows, int numCols, float spacing)
     return mesh;
 }
 
-MeshPX MeshBuilder::CreatePlanePX(float numRows, int numCols, float spacing)
+MeshPX MeshBuilder::CreatePlanePX(int numRows, int numCols, float spacing)
 {
     MeshPX mesh;
 
