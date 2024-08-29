@@ -130,7 +130,7 @@ void CubeMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
@@ -174,7 +174,7 @@ void RectMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
@@ -218,7 +218,7 @@ void PlaneMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
@@ -262,7 +262,7 @@ void CylinderMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
@@ -306,13 +306,13 @@ void SphereMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
 void SphereMesh::CreateMesh()
 {
-    MeshPC mesh = MeshBuilder::CreateSpherePC(20, 20, 2.5f);
+    MeshPC mesh = MeshBuilder::CreateSpherePC(10, 10, 2.5f);
 
     mMeshBuffer.Initialize<MeshPC>(mesh);
 
@@ -350,7 +350,7 @@ void SkyBoxMesh::Update(float deltaTime)
     }
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SEVEN))
     {
-        MainApp().ChangeState("SkySpehereMesh");
+        MainApp().ChangeState("SkySphereMesh");
     }
 }
 
@@ -364,7 +364,7 @@ void SkyBoxMesh::CreateMesh()
 
     shaderFile = L"../../Assets/Shaders/DoTexture.fx";
 
-    mVertexShader.Initialize<VertexPC>(shaderFile);
+    mVertexShader.Initialize<VertexPX>(shaderFile);
     mPixelShader.Initialize(shaderFile);
 
     mDiffuseTexture.Initialize("../../Assets/Images/skybox/skybox_texture.jpg");
