@@ -7,6 +7,7 @@
 #include "MeshBuffer.h"
 #include "Camera.h"
 #include "VertexTypes.h"
+#include "BlendState.h"
 
 using namespace FlowerEngine;
 using namespace FlowerEngine::Graphics;
@@ -30,6 +31,7 @@ namespace
         PixelShader mPixelShader;
         ConstantBuffer mConstantBuffer;
         MeshBuffer mMeshBuffer;
+        BlendState mBlendState;
 
         std::unique_ptr<VertexPC[]> mLineVertices;
         std::unique_ptr<VertexPC[]> mFaceVertices;
@@ -41,11 +43,12 @@ namespace
 
     void SimpleDrawImpl::Initialize(uint32_t maxVertexCount)
     {
-        std::filesystem::path shaderFile = "../../Assets/Shader/DoTransform.fx";
+        std::filesystem::path shaderFile = "../../Assets/Shaders/DoTransform.fx";
         mVertexShader.Initialize<VertexPC>(shaderFile);
         mPixelShader.Initialize(shaderFile);
         mConstantBuffer.Intialize(sizeof(Matrix4));
         mMeshBuffer.Initialize(nullptr, sizeof(VertexPC), maxVertexCount);
+        mBlendState.Initialize(BlendState::Mode::AlphaBlend);
 
         mLineVertices = std::make_unique<VertexPC[]>(maxVertexCount);
         mFaceVertices = std::make_unique<VertexPC[]>(maxVertexCount);
@@ -55,6 +58,7 @@ namespace
     }
     void SimpleDrawImpl::Terminate()
     {
+        mBlendState.Terminate();
         mMeshBuffer.Terminate();
         mConstantBuffer.Terminate();
         mPixelShader.Terminate();
@@ -88,9 +92,17 @@ namespace
         mVertexShader.Bind();
         mPixelShader.Bind();
 
+        mBlendState.Set();
+
+        mMeshBuffer.Update(mLineVertices.get(), mLineVertexCount);
+        mMeshBuffer.SetTopology(MeshBuffer::Topology::Lines);
+        mMeshBuffer.Render();
+
         mMeshBuffer.Update(mFaceVertices.get(), mFaceVertexCount);
         mMeshBuffer.SetTopology(MeshBuffer::Topology::Triangles);
         mMeshBuffer.Render();
+
+        BlendState::ClearState();
 
         mLineVertexCount = 0;
         mFaceVertexCount = 0;
@@ -99,58 +111,236 @@ namespace
     std::unique_ptr<SimpleDrawImpl> sInstance;
 }
 
-void simpleDraw::StaticIntialize(uint32_t maxVertexCount)
+void SimpleDraw::StaticIntialize(uint32_t maxVertexCount)
 {
     sInstance = std::make_unique<SimpleDrawImpl>();
     sInstance->Initialize(maxVertexCount);
 }
 
-void simpleDraw::StaticTerminate()
+void SimpleDraw::StaticTerminate()
 {
     sInstance->Terminate();
     sInstance.reset();
 }
 
-void simpleDraw::AddLine(const Math::Vector3& v0, const Math::Vector3 v1, const Color& color)
+void SimpleDraw::AddLine(const Math::Vector3& v0, const Math::Vector3 v1, const Color& color)
 {
+    sInstance->AddLine(v0, v1, color);
 }
 
-void simpleDraw::AddLine(const Math::Vector3& v0, const Math::Vector3 v1, const Math::Vector3 v2, const Color& color)
+void SimpleDraw::AddFace(const Math::Vector3& v0, const Math::Vector3 v1, const Math::Vector3 v2, const Color& color)
 {
+    sInstance->AddFace(v0, v1, v2, color);
 }
 
-void simpleDraw::AddAABB(const Math::Vector3& min, const Math::Vector3& max, const Color& color)
+void SimpleDraw::AddAABB(const Math::Vector3& min, const Math::Vector3& max, const Color& color)
 {
+    AddAABB(min.x, min.y, min.z, max.x, max.y, max.z, color);
 }
 
-void simpleDraw::AddAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, const Color& color)
+void SimpleDraw::AddAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, const Color& color)
 {
+    const Vector3 blf = { minX, minY, minZ };
+    const Vector3 tlf = { minX, maxY, minZ };
+    const Vector3 trf = { maxX, maxY, minZ };
+    const Vector3 brf = { maxX, minY, minZ };
+
+    const Vector3 blb = { minX, minY, maxZ };
+    const Vector3 tlb = { minX, maxY, maxZ };
+    const Vector3 trb = { maxX, maxY, maxZ };
+    const Vector3 brb = { maxX, minY, maxZ };
+
+    //front 
+    AddLine(blf, tlf, color);
+    AddLine(tlf, trf, color);
+    AddLine(trf, brf, color);
+    AddLine(brf, blf, color);
+
+    //back
+    AddLine(blb, tlb, color);
+    AddLine(tlb, trb, color);
+    AddLine(trb, brb, color);
+    AddLine(brb, blb, color);
+
+    //top
+    AddLine(tlf, tlb, color);
+    AddLine(trf, trb, color);
+
+    //bottom
+    AddLine(blf, blb, color);
+    AddLine(brf, brb, color);
 }
 
-void simpleDraw::AddFilledAABB(const Math::Vector3& min, const Math::Vector3& max, const Color& color)
+void SimpleDraw::AddFilledAABB(const Math::Vector3& min, const Math::Vector3& max, const Color& color)
 {
+    AddFilledAABB(min.x, min.y, min.z, max.x, max.y, max.z, color);
 }
 
-void simpleDraw::AddFilledAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, const Color& color)
+void SimpleDraw::AddFilledAABB(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, const Color& color)
 {
+    const Vector3 blf = { minX, minY, minZ };
+    const Vector3 tlf = { minX, maxY, minZ };
+    const Vector3 trf = { maxX, maxY, minZ };
+    const Vector3 brf = { maxX, minY, minZ };
+
+    const Vector3 blb = { minX, minY, maxZ };
+    const Vector3 tlb = { minX, maxY, maxZ };
+    const Vector3 trb = { maxX, maxY, maxZ };
+    const Vector3 brb = { maxX, minY, maxZ };
+
+    //front
+    AddFace(blf, tlf, trf, color);
+    AddFace(blf, trf, brf, color);
+
+    //back
+    AddFace(brb, trb, tlb, color);
+    AddFace(brb, tlb, blb, color);
+
+    //right
+    AddFace(brf, trf, trb, color);
+    AddFace(brf, trb, brb, color);
+
+    //left
+    AddFace(blb, tlb, tlf, color);
+    AddFace(blb, tlf, blf, color);
+
+    //top
+    AddFace(tlf, tlb, trb, color);
+    AddFace(tlf, trb, trf, color);
+
+    //bottom
+    AddFace(brf, brb, blb, color);
+    AddFace(brf, blb, blf, color);
+
 }
 
-void simpleDraw::AddSphere(int slices, int rings, float radius, const Color& color)
+void SimpleDraw::AddSphere(int slices, int rings, float radius, const Math::Vector3& pos, const Color& color)
 {
+    Vector3 v0 = Vector3::Zero;
+    Vector3 v1 = Vector3::Zero;
+
+    const float vertRot = (Pi / static_cast<float>(rings));
+    const float horzRot = (TwoPi / static_cast<float>(slices));
+
+    for (int r = 0; r < rings; ++r)
+    {
+        int ring = static_cast<float>(r);
+        float phi = ring * vertRot;
+
+        for (int s = 0; s < slices; ++s)
+        {
+            float slice0 = static_cast<float>(s);
+            float rot0 = slice0 * horzRot;
+
+            float slice1 = static_cast<float>(s + 1);
+            float rot1 = slice1 * horzRot;
+
+            v0 = {
+                sin(rot0) * sin(phi) * radius,
+                cos(phi) * radius,
+                cos(rot0) * sin(phi) * radius
+            };
+            v1 = {
+                sin(rot1) * sin(phi) * radius,
+                cos(phi) * radius,
+                cos(rot1) * sin(phi) * radius
+            };
+
+            AddLine(v0 + pos, v1 + pos, color);
+
+            v0 = {
+                cos(phi) * radius,
+                cos(rot0) * sin(phi) * radius,
+                sin(rot0) * sin(phi) * radius
+            };
+            v1 = {
+                cos(phi) * radius,
+                cos(rot1) * sin(phi) * radius,
+                sin(rot1) * sin(phi) * radius
+            };
+
+            AddLine(v0 + pos, v1 + pos, color);
+        }
+    }
 }
 
-void simpleDraw::AddGroundCircle(float slices, float radius, const Color& color)
+void SimpleDraw::AddGroundCircle(float slices, float radius, const Math::Vector3& pos, const Color& color)
 {
+    Vector3 v0 = Vector3::Zero;
+    Vector3 v1 = Vector3::Zero;
+    const float horRot = (TwoPi / static_cast<float>(slices));
+    for (int s = 0; s < slices; ++s)
+    {
+        float slice0 = static_cast<float>(s);
+        float rot0 = slice0 * horRot;
+
+        float slice1 = static_cast<float>(s + 1);
+        float rot1 = slice1 * horRot;
+
+        v0 = {
+            sin(rot0) * radius,
+            0.0f,
+            cos(rot0) * radius
+        };
+        v1 = {
+            sin(rot1) * radius,
+            0.0f,
+            cos(rot1) * radius
+        };
+
+        AddLine(v0 + pos, v1 + pos, color);
+    }
 }
 
-void simpleDraw::AddGroundPlane(float size, const Color& color)
+void SimpleDraw::AddGroundPlane(float size, const Color& color)
 {
+    const float hs = size * 0.5f;
+    for (int i = 0; i <= size; ++i)
+    {
+        AddLine({ i - hs, 0.0f, -hs }, { i - hs, 0.0f, hs }, color);
+        AddLine({ -hs, 0.0f, i - hs }, { hs, 0.0f, i - hs }, color);
+    }
 }
 
-void simpleDraw::AddTransform(const Math::Matrix4 m)
+void SimpleDraw::AddTransform(const Math::Matrix4 m)
 {
+    const Vector3 side = { m._11, m._12, m._13 };
+    const Vector3 up = { m._21, m._22, m._23 };
+    const Vector3 look = { m._31, m._32, m._33 };
+    const Vector3 pos = { m._41, m._42, m._43 };
+
+    AddLine(pos, pos + side, Colors::Red);
+    AddLine(pos, pos + up, Colors::Green);
+    AddLine(pos, pos + look, Colors::Blue);
 }
 
-void simpleDraw::Render(const Camera& camera)
+void SimpleDraw::AddDiamond(float top, float bottom, float base, const Math::Vector3& pos, const Color& color)
 {
+    Math::Vector3 V0 = Math::Vector3(0.0f, top, 0.0f);    // Top
+    Math::Vector3 V1 = Math::Vector3(0.0f, bottom, 0.0f);   // Bottom
+    Math::Vector3 V2 = Math::Vector3(-base, 0.0f, -base);
+    Math::Vector3 V3 = Math::Vector3(base, 0.0f, -base);
+    Math::Vector3 V4 = Math::Vector3(base, 0.0f, base);
+    Math::Vector3 V5 = Math::Vector3(-base, 0.0f, base);
+
+    //connecting top vertex with base
+    SimpleDraw::AddLine(pos + V0, pos + V2, color);
+    SimpleDraw::AddLine(pos + V0, pos + V3, color);
+    SimpleDraw::AddLine(pos + V0, pos + V4, color);
+    SimpleDraw::AddLine(pos + V0, pos + V5, color);
+    //connecting bottom vertex with base
+    SimpleDraw::AddLine(pos + V1, pos + V2, color);
+    SimpleDraw::AddLine(pos + V1, pos + V3, color);
+    SimpleDraw::AddLine(pos + V1, pos + V4, color);
+    SimpleDraw::AddLine(pos + V1, pos + V5, color);
+    //base vertices to form the middle square
+    SimpleDraw::AddLine(pos + V2, pos + V3, color);
+    SimpleDraw::AddLine(pos + V3, pos + V4, color);
+    SimpleDraw::AddLine(pos + V4, pos + V5, color);
+    SimpleDraw::AddLine(pos + V5, pos + V2, color);
+}
+
+void SimpleDraw::Render(const Camera& camera)
+{
+    sInstance->Render(camera);
 }

@@ -85,7 +85,7 @@ void MeshBuffer::CreateVertexBuffer(const void* vertices, uint32_t vertexSize, u
     D3D11_SUBRESOURCE_DATA initData{};
     initData.pSysMem = vertices;
 
-    HRESULT hr = device->CreateBuffer(&bufferDesc, (isDynamic ? nullptr : & initData), &mVertexBuffer);
+    HRESULT hr = device->CreateBuffer(&bufferDesc, (isDynamic ? nullptr : &initData), &mVertexBuffer);
     ASSERT(SUCCEEDED(hr), "Failed to create vertex buffer");
 }
 
