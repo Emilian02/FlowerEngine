@@ -2,18 +2,6 @@
 
 #include <FlowerEngine/Inc/FlowerEngine.h>
 
-enum class DebugDrawType
-{
-    None,
-    Transform,
-    GroundPlane,
-    GroudnCircle,
-    Sphere,
-    AABB,
-    AABBFilled,
-    Diamond
-};
-
 class GameState : public FlowerEngine::AppState
 {
 public: 
@@ -25,6 +13,14 @@ public:
 
 protected:
     void UpdateCamera(float deltaTime);
+
     FlowerEngine::Graphics::Camera mCamera;
-    DebugDrawType mDebugDrawType = DebugDrawType::None;
+    FlowerEngine::Graphics::Camera mRenderTargetCamera;
+    FlowerEngine::Graphics::ConstantBuffer mConstantBuffer;
+    FlowerEngine::Graphics::MeshBuffer mMeshBuffer;
+    FlowerEngine::Graphics::VertexShader mVertexShader;
+    FlowerEngine::Graphics::PixelShader mPixelShader;
+    FlowerEngine::Graphics::Texture mDiffuseTexture;
+    FlowerEngine::Graphics::Sampler mSampler;
+    FlowerEngine::Graphics::RenderTarget mRenderTarget;
 };

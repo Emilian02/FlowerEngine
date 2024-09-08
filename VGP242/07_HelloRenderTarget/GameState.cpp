@@ -6,26 +6,42 @@ using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Input;
 
-const char* gDrawTypeNames[] =
-{
-    "None",
-    "Transform",
-    "GroundPlane",
-    "GroudnCircle",
-    "Sphere",
-    "AABB",
-    "AABBFilled",
-    "Diamond"
-};
+
 
 void GameState::Initialize()
 {
+    MeshPX mesh = MeshBuilder::CreateSpherePX(60, 60, 1.0f);
+
     mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
+
+    mRenderTargetCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
+    mRenderTargetCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
+    mRenderTargetCamera.SetAspectRatio(1.0f);
+
+    mMeshBuffer.Initialize<MeshPX>(mesh);
+
+    mConstantBuffer.Intialize(sizeof(Matrix4));
+    std::filesystem::path shaderFile = L"../../Assets/Shaders/DoTexture.fx";
+    mVertexShader.Initialize<VertexPX>(shaderFile);
+    mPixelShader.Initialize(shaderFile);
+
+    mDiffuseTexture.Initialize("../../Assets/Images/planets/earth/earth.jpg");
+    mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
+
+    constexpr uint32_t size = 512;
+    mRenderTarget.Initialize(512, 512, Texture::Format::RGBA_U32);
 }
 
 void GameState::Terminate()
 {
+    mRenderTarget.Terminate();
+    mSampler.Terminate();
+    mDiffuseTexture.Terminate();
+    mPixelShader.Terminate();
+    mVertexShader.Terminate();
+    mConstantBuffer.Terminate();
+    mMeshBuffer.Terminate();
 }
 
 void GameState::Update(float deltaTime)
@@ -69,105 +85,52 @@ void GameState::UpdateCamera(float deltaTime)
     }
 }
 
-// Geenral Variables
-Color color = Colors::AliceBlue;
-Vector3 pos = Vector3::Zero;
-
-// Plane Variables
-float planeSize = 10;
-
-// Cirlce Variables
-float radius = 2.0f;
-float slices = 10.0f;
-float rings = 10.0f;
-
-//AABB
-Vector3 minExtents = Vector3::Zero;
-Vector3 maxExtents = Vector3::Zero;
-
-//Diamond
-float top = 1.0f;
-float bottom = -1.0f; //needs to be negative
-float base = 0.5;
-
 void GameState::Render()
 {
-    if (mDebugDrawType == DebugDrawType::Transform)
-    {
-        SimpleDraw::AddTransform(Matrix4::Identity);
-    }
-    else if (mDebugDrawType == DebugDrawType::GroundPlane)
-    {
-        SimpleDraw::AddGroundPlane(planeSize, color);
-    }
-    else if (mDebugDrawType == DebugDrawType::GroudnCircle)
-    {
-        SimpleDraw::AddGroundCircle(slices, radius, pos, color);
-    }
-    else if (mDebugDrawType == DebugDrawType::Sphere)
-    {
-        SimpleDraw::AddSphere(slices, rings, radius, pos, color);
-    }
-    else if (mDebugDrawType == DebugDrawType::AABB)
-    {
-        SimpleDraw::AddAABB(minExtents, maxExtents, color);
-    }
-    else if (mDebugDrawType == DebugDrawType::AABBFilled)
-    {
-        SimpleDraw::AddFilledAABB(minExtents, maxExtents, color);
-    }
-    else if (mDebugDrawType == DebugDrawType::Diamond)
-    {
-        SimpleDraw::AddDiamond(top, bottom, base, pos, color);
-    }
-    SimpleDraw::Render(mCamera);
+    mVertexShader.Bind();
+    mPixelShader.Bind();
+
+    mDiffuseTexture.BindPS(0);
+    mSampler.BindPS(0);
+
+    // constant buffer
+    Matrix4 matWorld = Matrix4::Identity;
+    Matrix4 matView = mCamera.GetViewMatrix();
+    Matrix4 matProj = mCamera.GetProjectionMatrix();
+    Matrix4 matFinal = matWorld * matView * matProj;
+    Matrix4 wvp = Transpose(matFinal);
+    mConstantBuffer.Update(&wvp);
+    mConstantBuffer.BindVS(0);
+
+    mMeshBuffer.Render();
+
+    matWorld = Matrix4::Identity;
+    matView = mRenderTargetCamera.GetViewMatrix();
+    matProj = mRenderTargetCamera.GetProjectionMatrix();
+    matFinal = matWorld * matView * matProj;
+    wvp = Transpose(matFinal);
+    mConstantBuffer.Update(&wvp);
+    mConstantBuffer.BindVS(0);
+
+    mRenderTarget.BeginRender();
+        mMeshBuffer.Render();
+    mRenderTarget.EndRender();
+
 }
 
+bool buttonValue = false;
+int intValue = 0;
 void GameState::DebugUI()
 {
+    SimpleDraw::AddGroundPlane(10.0f, Colors::White);
+    SimpleDraw::Render(mCamera);
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    int currentDrawType = static_cast<int>(mDebugDrawType);
-
-    if (ImGui::Combo("DrawType", &currentDrawType, gDrawTypeNames, static_cast<int>(std::size(gDrawTypeNames))))
-    {
-        mDebugDrawType = (DebugDrawType)currentDrawType;
-    }
-
-    if (mDebugDrawType == DebugDrawType::GroundPlane)
-    {
-        ImGui::DragFloat("Plane Size", &planeSize, 0.1f);
-    }
-    else if (mDebugDrawType == DebugDrawType::GroudnCircle)
-    {
-        ImGui::DragFloat("Slices", &slices, 0.1f);
-        ImGui::DragFloat("Radius", &radius, 0.1f);
-        ImGui::DragFloat3("Position", &pos.x, 0.1f);
-    }
-    else if (mDebugDrawType == DebugDrawType::Sphere)
-    {
-        ImGui::DragFloat("Slices", &slices, 0.1f);
-        ImGui::DragFloat("Rings", &rings, 0.1f);
-        ImGui::DragFloat("Radius", &radius, 0.1f);
-        ImGui::DragFloat3("Position", &pos.x, 0.1f);
-    }
-    else if (mDebugDrawType == DebugDrawType::AABB)
-    {
-        ImGui::DragFloat3("MinExtents", &minExtents.x, 0.1f);
-        ImGui::DragFloat3("MaxExtents", &maxExtents.x, 0.1f);
-    }
-    else if (mDebugDrawType == DebugDrawType::AABBFilled)
-    {
-        ImGui::DragFloat3("MinExtents", &minExtents.x, 0.1f);
-        ImGui::DragFloat3("MaxExtents", &maxExtents.x, 0.1f);
-    }
-    else if (mDebugDrawType == DebugDrawType::Diamond)
-    {
-        ImGui::DragFloat("Top", &top, 0.1f);
-        ImGui::DragFloat("Bottom", &bottom, 0.1f);
-        ImGui::DragFloat("Base", &base, 0.1f);
-        ImGui::DragFloat3("Position", &pos.x, 0.1f);
-    }
-
-    ImGui::ColorEdit4("Color", &color.r);
+    ImGui::Image(
+        mRenderTarget.GetRawData(),
+        { 256, 256 },
+        { 0,0 },
+        { 1,1 },
+        { 1, 1, 1, 1 },
+        { 1, 1, 1, 1 });
     ImGui::End();
 }

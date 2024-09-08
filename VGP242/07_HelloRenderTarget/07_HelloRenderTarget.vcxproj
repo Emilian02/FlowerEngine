@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{42525efe-eb41-457e-90dd-70ca01edd8c0}</ProjectGuid>
+    <ProjectGuid>{d2c1ef5e-1767-4b6a-a28e-966d7afe454f}</ProjectGuid>
     <RootNamespace>My07HelloRenderTarget</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -130,6 +130,11 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine\FlowerEngine\FlowerEngine.vcxproj">
+      <Project>{c8b15174-9001-409a-b2a7-885284a43179}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="WinMain.cpp" />
