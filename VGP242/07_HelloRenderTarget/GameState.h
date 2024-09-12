@@ -2,6 +2,28 @@
 
 #include <FlowerEngine/Inc/FlowerEngine.h>
 
+enum class SolarSystemDraws
+{
+    Sun,
+    Mercury,
+    Venus,
+    Earth,
+    Mars,
+    Jupiter,
+    Saturn,
+    Uranus,
+    Neptune,
+    Pluto
+};
+
+class SolarSystem
+{
+public:
+    //Rendering
+    FlowerEngine::Graphics::MeshBuffer mMeshBuffer;
+    FlowerEngine::Graphics::Texture mDiffuseTexture;
+};
+
 class GameState : public FlowerEngine::AppState
 {
 public: 
@@ -13,6 +35,8 @@ public:
 
 protected:
     void UpdateCamera(float deltaTime);
+
+    SolarSystem mSolarSystem[11];
 
     FlowerEngine::Graphics::Camera mCamera;
     FlowerEngine::Graphics::Camera mRenderTargetCamera;

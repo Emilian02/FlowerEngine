@@ -6,11 +6,43 @@ using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Input;
 
+const char* gSolarSystem[] =
+{
+    "Sun",
+    "Mercury",
+    "Venus",
+    "Earth",
+    "Mars",
+    "Jupiter",
+    "Saturn",
+    "Uranus",
+    "Neptune",
+    "Pluto"
+};
 
+const char* gTextures[] =
+{
+    "sun.jpg",
+    "mercury.jpg",
+    "venus.jpg",
+    "earth.jpg",
+    "mars.jpg",
+    "jupiter.jpg",
+    "saturn.jpg",
+    "uranus.jpg",
+    "neptune.jpg",
+    "pluto.jpg"
+};
 
 void GameState::Initialize()
 {
-    MeshPX mesh = MeshBuilder::CreateSpherePX(60, 60, 1.0f);
+    // planet::Init()
+    //{
+    MeshPX mesh = MeshBuilder::CreateSkySpherePX(200, 200, 200.0f);
+    // meshBuffer.Init(mesh)
+    // base transforms
+    // matWorld = Matrix4::RotationMatrix(localRotation) * Matrix4::TranslationMatrix(vector3::zaxis * distanceFromSun) * Matrix4::RotationMatrix(orbitRotation)
+    //}
 
     mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
@@ -26,8 +58,11 @@ void GameState::Initialize()
     mVertexShader.Initialize<VertexPX>(shaderFile);
     mPixelShader.Initialize(shaderFile);
 
-    mDiffuseTexture.Initialize("../../Assets/Images/planets/earth/earth.jpg");
+    mDiffuseTexture.Initialize("../../Assets/Images/skysphere/space.jpg");
     mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
+
+    // go through and initialize each planet
+    // each planet needs MeshBuffer, Texture, Matrix4 (transform), rotation speed, distance from sun, update position/rotation
 
     constexpr uint32_t size = 512;
     mRenderTarget.Initialize(512, 512, Texture::Format::RGBA_U32);
@@ -47,13 +82,15 @@ void GameState::Terminate()
 void GameState::Update(float deltaTime)
 {
     UpdateCamera(deltaTime);
+
+    // update all planet rotation/position
 }
 
 void GameState::UpdateCamera(float deltaTime)
 {
     auto input = InputSystem::Get();
     const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? 10.0f : 1.0f) * deltaTime;
-    const float turnSpeed = 0.1f * deltaTime;
+    const float turnSpeed = 0.2f * deltaTime;
     if (input->IsKeyDown(KeyCode::W))
     {
         mCamera.Walk(moveSpeed);
@@ -102,9 +139,30 @@ void GameState::Render()
     mConstantBuffer.Update(&wvp);
     mConstantBuffer.BindVS(0);
 
+    // render all planets
+    // for(planet : mPlanets)
+    // {
+    //      matWorld = planet.matWorld; transform//
+    //      matFinal = matWorld * matView * matProj
+    //      wvp = Transpose(matFinal)
+    // mConstantBuffer.Update(&wvp)
+    // mConstantBuffer.BindVS(0)
+    // planet.meshbuffer.render()
+    //}
     mMeshBuffer.Render();
 
     matWorld = Matrix4::Identity;
+    // option1===============================================
+    // matView = planet.transform
+    // mRenderTarget.setposition(planet.position + Normalize(planet.position) * 2.0f)
+    // mRenderTarget.setlookat(planet.position)
+    // option2===============================================
+    // dont update renderTargetCamera
+    // matWorld = Matrix4::identity
+    // constant buffer stuff
+    // rendertarget.begin()
+    // planet[selectedPlanetIndex].meshBuffer.Render();
+    // rendertarget.end()
     matView = mRenderTargetCamera.GetViewMatrix();
     matProj = mRenderTargetCamera.GetProjectionMatrix();
     matFinal = matWorld * matView * matProj;
@@ -122,15 +180,7 @@ bool buttonValue = false;
 int intValue = 0;
 void GameState::DebugUI()
 {
-    SimpleDraw::AddGroundPlane(10.0f, Colors::White);
     SimpleDraw::Render(mCamera);
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    ImGui::Image(
-        mRenderTarget.GetRawData(),
-        { 256, 256 },
-        { 0,0 },
-        { 1,1 },
-        { 1, 1, 1, 1 },
-        { 1, 1, 1, 1 });
     ImGui::End();
 }
