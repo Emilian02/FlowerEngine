@@ -17,6 +17,7 @@ void ConstantBuffer::Intialize(uint32_t bufferSize)
     desc.ByteWidth = bufferSize;
     desc.Usage = D3D11_USAGE_DEFAULT;
     desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    desc.MiscFlags = 0;
     desc.CPUAccessFlags = 0;
     desc.StructureByteStride = 0;
 
