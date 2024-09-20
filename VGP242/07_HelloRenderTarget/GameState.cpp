@@ -192,6 +192,16 @@ int planetIndex = 0;
 float renderTargetDistance = -30.f;
 void GameState::Render()
 {
+
+    for (int i = 0; i < 10; ++i)
+    {
+        if (ringToggle)
+        {
+            SimpleDraw::AddGroundCircle(100, mSolarSystem[i].mDistanceFromSun, { 0, 0, 0 }, Colors::White);
+        }
+    }
+    SimpleDraw::Render(mCamera);
+
     mVertexShader.Bind();
     mPixelShader.Bind();
 
@@ -212,11 +222,12 @@ void GameState::Render()
     for (int i = 0; i < 10; ++i)
     {
         mSolarSystem[i].Render(mConstantBuffer, matView, matProj);
-        if (ringToggle)
-        {
-            SimpleDraw::AddGroundCircle(100, mSolarSystem[i].mDistanceFromSun, { 0, 0, 0 }, Colors::White);
-        }
     }
+
+    Vector3 planetPosition = mSolarSystem[planetIndex].GetPlanetPosition();
+    Vector3 offset(0.0f, 0.0f, renderTargetDistance);
+    mRenderTargetCamera.SetPosition(planetPosition + offset);
+    mRenderTargetCamera.SetLookAt(planetPosition);
 
     matWorld = mSolarSystem[planetIndex].mMatWorld;
     matView = mRenderTargetCamera.GetViewMatrix();
@@ -226,17 +237,11 @@ void GameState::Render()
     mConstantBuffer.Update(&wvp);
     mConstantBuffer.BindVS(0);
 
-    Vector3 planetPosition = mSolarSystem[planetIndex].GetPlanetPosition();
-    Vector3 offset(0.0f, 0.0f, renderTargetDistance);
-    mRenderTargetCamera.SetPosition(planetPosition + offset);
-    mRenderTargetCamera.SetLookAt(planetPosition);
-
     mSolarSystem[planetIndex].mDiffuseTexture.BindPS(0);
     mRenderTarget.BeginRender();
         mSolarSystem[planetIndex].mMeshBuffer.Render();
     mRenderTarget.EndRender();
 
-    SimpleDraw::Render(mCamera);
 }
 
 
