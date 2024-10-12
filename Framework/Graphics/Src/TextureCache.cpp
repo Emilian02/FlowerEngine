@@ -56,13 +56,32 @@ TextureId TextureCache::LoadTexture(const std::filesystem::path& fileName, bool 
 
 const Texture* TextureCache::GetTexture(TextureId id) const
 {
+    auto iter = mInventory.find(id);
+
+    if (iter != mInventory.end())
+    {
+        return iter->second.get();
+    }
+
     return nullptr;
 }
 
 void TextureCache::BindVS(TextureId id, uint32_t slot) const
 {
+    auto iter = mInventory.find(id);
+
+    if (iter != mInventory.end())
+    {
+        iter->second->BindVS(slot);
+    }
 }
 
 void TextureCache::BindPS(TextureId id, uint32_t slot) const
 {
+    auto iter = mInventory.find(id);
+
+    if (iter != mInventory.end())
+    {
+        iter->second->BindPS(slot);
+    }
 }

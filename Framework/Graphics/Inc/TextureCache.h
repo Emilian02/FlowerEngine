@@ -23,14 +23,14 @@ namespace FlowerEngine::Graphics
 
         void SetRootDirectory(std::filesystem::path root);
 
-        TextureId LoadTexture(const std::filesystem::path& filePath, bool useRootDir = true);
+        TextureId LoadTexture(const std::filesystem::path& fileName, bool useRootDir = true);
         const Texture* GetTexture(TextureId id) const;
 
         void BindVS(TextureId id, uint32_t slot) const;
         void BindPS(TextureId id, uint32_t slot) const;
 
     private:
-        using Inventory = std::unordered_map<TextureId, std::unique_ptr<TextureId>>;
+        using Inventory = std::unordered_map<TextureId, std::unique_ptr<Texture>>;
         Inventory mInventory;
 
         std::filesystem::path mRootDirectory;

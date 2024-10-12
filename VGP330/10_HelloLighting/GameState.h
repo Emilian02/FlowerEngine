@@ -15,8 +15,7 @@ protected:
     void UpdateCamera(float deltaTime);
 
     FlowerEngine::Graphics::Camera mCamera;
-    FlowerEngine::Graphics::RenderObject mPlanet;
-    FlowerEngine::Graphics::RenderObject mPlanet2;
+    std::vector<FlowerEngine::Graphics::RenderObject> mPlanets;
 
     FlowerEngine::Graphics::StandardEffect mStandardEffect;
 };

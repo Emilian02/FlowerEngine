@@ -9,16 +9,16 @@ using namespace FlowerEngine::Graphics;
 
 void StandardEffect::Intitialize(const std::filesystem::path& path)
 {
-    mVertexShader.Initialize<VertexPX>(path);
+    mVertexShader.Initialize<Vertex>(path);
     mPixelShader.Initialize(path);
     mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
 
-    mConstantBuffer.Intialize(sizeof(Math::Matrix4));
+    mTransformBuffer.Initialize();
 }
 
 void StandardEffect::Terminate()
 {
-    mConstantBuffer.Terminate();
+    mTransformBuffer.Terminate();
     mSampler.Terminate();
     mPixelShader.Terminate();
     mVertexShader.Terminate();
@@ -30,7 +30,7 @@ void StandardEffect::Begin()
     mPixelShader.Bind();
     mSampler.BindPS(0);
 
-    mConstantBuffer.BindVS(0);
+    mTransformBuffer.BindVS(0);
 }
 
 void StandardEffect::End()
@@ -47,10 +47,13 @@ void StandardEffect::Render(const RenderObject& renderObject)
     const Math::Matrix4 matProj = mCamera->GetProjectionMatrix();
 
     const Math::Matrix4 matFinal = matWorld * matView * matProj;
-    const Math::Matrix4 wvp = Transpose(matFinal);
-    mConstantBuffer.Update(&wvp);
+    TransformData transformData;
+    transformData.wvp = Transpose(matFinal);
+    mTransformBuffer.Update(transformData);
 
-    renderObject.diffuseTexture.BindPS(0);
+    TextureCache* tc = TextureCache::Get();
+    tc->BindPS(renderObject.diffuseTextureId, 0);
+
     renderObject.meshBuffer.Render();
 }
 

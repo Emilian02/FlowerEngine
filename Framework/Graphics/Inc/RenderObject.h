@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MeshBuffer.h"
-#include "Texture.h"
+#include "TextureCache.h"
 #include "Transform.h"
 
 namespace FlowerEngine::Graphics
@@ -14,6 +14,7 @@ namespace FlowerEngine::Graphics
 
         Transform transform;
         MeshBuffer meshBuffer;
-        Texture diffuseTexture;
+
+        TextureId diffuseTextureId;
     };
 }

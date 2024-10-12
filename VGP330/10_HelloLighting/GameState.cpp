@@ -13,17 +13,18 @@ void GameState::Initialize()
     mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
 
-    MeshPX mesh = MeshBuilder::CreateSpherePX(60, 60, 1.0f);
+    Mesh mesh = MeshBuilder::CreateSphere(30, 30, 1.0f);
+    float x = -5.0f;
+    for (int i = 0; i < 9; ++i)
+    {
+        RenderObject& planet = mPlanets.emplace_back();
+        planet.meshBuffer.Initialize(mesh);
+        planet.diffuseTextureId = TextureCache::Get()->LoadTexture("skysphere/space.jpg");
+        planet.transform.position.x = x;
+        x += 1.0f;
+    }
 
-    mPlanet.meshBuffer.Initialize(mesh);
-    mPlanet.diffuseTexture.Initialize(L"../../Assets/Images/skysphere/space.jpg");
-    mPlanet.transform.position.x = -1;
-
-    mPlanet2.meshBuffer.Initialize(mesh);
-    mPlanet2.diffuseTexture.Initialize(L"../../Assets/Images/planets/earth.jpg");
-    mPlanet2.transform.position.x = 1;
-
-    std::filesystem::path shaderFile = L"../../Assets/Shaders/DoTexture.fx";
+    std::filesystem::path shaderFile = L"../../Assets/Shaders/Standard.fx";
     mStandardEffect.Intitialize(shaderFile);
     mStandardEffect.SetCamera(mCamera);
 }
@@ -31,6 +32,10 @@ void GameState::Initialize()
 void GameState::Terminate()
 {
     mStandardEffect.Terminate();
+    for (RenderObject& planet : mPlanets)
+    {
+        planet.Terminate();
+    }
 }
 
 void GameState::Update(float deltaTime)
@@ -77,8 +82,10 @@ void GameState::UpdateCamera(float deltaTime)
 void GameState::Render()
 {
     mStandardEffect.Begin();
-        mStandardEffect.Render(mPlanet);
-        mStandardEffect.Render(mPlanet2);
+        for (RenderObject& planet : mPlanets)
+        {
+            mStandardEffect.Render(planet);
+        }
     mStandardEffect.End();
 }
 

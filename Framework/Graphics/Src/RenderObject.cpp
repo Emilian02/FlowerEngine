@@ -7,5 +7,4 @@ using namespace FlowerEngine::Graphics;
 void RenderObject::Terminate()
 {
     meshBuffer.Terminate();
-    diffuseTexture.Terminate();
 }

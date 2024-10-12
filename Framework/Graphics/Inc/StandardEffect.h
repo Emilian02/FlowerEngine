@@ -26,10 +26,21 @@ namespace FlowerEngine::Graphics
         void DebugUI();
 
     private:
-        ConstantBuffer mConstantBuffer;
+        struct TransformData
+        {
+            Math::Matrix4 wvp;
+        };
+
+        //ligting
+        //material
+        //settings
+
+        using TransformBuffer = TypedConstantBuffer<TransformData>;
+        TransformBuffer mTransformBuffer;
+
         VertexShader mVertexShader;
         PixelShader mPixelShader;
-        Sampler mSampler    ;
+        Sampler mSampler;
 
         const Camera* mCamera = nullptr;
     };
