@@ -3,6 +3,7 @@
 #include "MeshBuffer.h"
 #include "TextureCache.h"
 #include "Transform.h"
+#include "Material.h"
 
 namespace FlowerEngine::Graphics
 {
@@ -15,6 +16,10 @@ namespace FlowerEngine::Graphics
         Transform transform;
         MeshBuffer meshBuffer;
 
-        TextureId diffuseTextureId;
+        Material material;
+        TextureId diffuseMapId;
+        TextureId normalMapId;
+        TextureId specMapId;
+        TextureId bumpMapId;
     };
 }

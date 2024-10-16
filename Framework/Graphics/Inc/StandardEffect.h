@@ -4,11 +4,14 @@
 #include "PixelShader.h"
 #include "Sampler.h"
 #include "VertexShader.h"
+#include "DirectionalLight.h"
+#include "Material.h"
 
 namespace FlowerEngine::Graphics
 {
     class Camera;
     class RenderObject;
+    struct DirectionalLight;
 
     class StandardEffect final
     {
@@ -23,25 +26,45 @@ namespace FlowerEngine::Graphics
 
         void SetCamera(const Camera& camera);
 
+        void SetDirectionalLight(const DirectionalLight& directionalLight);
+
         void DebugUI();
 
     private:
         struct TransformData
         {
             Math::Matrix4 wvp;
+            Math::Matrix4 world;
+            Math::Vector3 viewPosition;
+            float padding = 0.0f;
         };
 
-        //ligting
-        //material
-        //settings
+        struct SettingsData
+        {
+            int useDiffuseMap = 1;
+            int useNormalMap = 1;
+            int useSpecMap = 1;
+            int useBumpMap = 1;
+            float bumpWeight = 1.0f;
+            float padding[3] = { 0.0f };
+        };
 
         using TransformBuffer = TypedConstantBuffer<TransformData>;
+        using LightBuffer = TypedConstantBuffer<DirectionalLight>;
+        using MaterialBuffer = TypedConstantBuffer<Material>;
+        using SettingsBuffer = TypedConstantBuffer<SettingsData>;
+
         TransformBuffer mTransformBuffer;
+        LightBuffer mLightBuffer;
+        MaterialBuffer mMaterialBuffer;
+        SettingsBuffer mSettingsBuffer;
 
         VertexShader mVertexShader;
         PixelShader mPixelShader;
         Sampler mSampler;
 
+        SettingsData mSettingsData;
         const Camera* mCamera = nullptr;
+        const DirectionalLight* mDirectionalLight = nullptr;
     };
 }
