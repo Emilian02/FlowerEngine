@@ -24,10 +24,10 @@ void GameState::Initialize()
     {
         RenderObject& planet = mPlanets.emplace_back();
         planet.meshBuffer.Initialize(mesh);
-        planet.diffuseMapId = TextureCache::Get()->LoadTexture("planets/earth/earth.jpg");
-        planet.normalMapId = TextureCache::Get()->LoadTexture("planets/earth/earth_normal.jpg");
-        planet.specMapId = TextureCache::Get()->LoadTexture("planets/earth/earth_spec.jpg");
-        planet.bumpMapId = TextureCache::Get()->LoadTexture("planets/earth/earth_bump.jpg");
+        planet.diffuseMapId = TextureCache::Get()->LoadTexture("metal_plate/textures/metal_plate_diff.jpg");
+        planet.normalMapId = TextureCache::Get()->LoadTexture("metal_plate/textures/metal_plate_nor.jpg");
+        planet.specMapId = TextureCache::Get()->LoadTexture("metal_plate/textures/metal_plate_spec.jpg");
+        planet.bumpMapId = TextureCache::Get()->LoadTexture("metal_plate/textures/metal_plate_bump.jpg");
         planet.transform.position.x = x;
         x += 5.0f;
     }

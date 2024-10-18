@@ -121,6 +121,6 @@ void StandardEffect::DebugUI()
             mSettingsData.useBumpMap = (useBump) ? 1 : 0;
         }
 
-        ImGui::DragFloat("BumpWeight", &mSettingsData.bumpWeight, 0.01f, -5.0f, 100.0f);
+        ImGui::DragFloat("BumpWeight", &mSettingsData.bumpWeight, 0.001f, -5.0f, 10.0f);
     }
 }
