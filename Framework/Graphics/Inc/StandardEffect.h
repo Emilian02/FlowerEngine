@@ -11,7 +11,7 @@ namespace FlowerEngine::Graphics
 {
     class Camera;
     class RenderObject;
-    struct DirectionalLight;
+    class RenderGroup;
 
     class StandardEffect final
     {
@@ -23,6 +23,7 @@ namespace FlowerEngine::Graphics
         void End();
 
         void Render(const RenderObject& renderObject);
+        void Render(const RenderGroup& renderGroup);
 
         void SetCamera(const Camera& camera);
 
@@ -45,7 +46,7 @@ namespace FlowerEngine::Graphics
             int useNormalMap = 1;
             int useSpecMap = 1;
             int useBumpMap = 1;
-            float bumpWeight = 1.0f;
+            float bumpWeight = 0.01f;
             float padding[3] = { 0.0f };
         };
 
