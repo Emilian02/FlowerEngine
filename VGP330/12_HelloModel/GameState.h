@@ -19,4 +19,5 @@ protected:
     FlowerEngine::Graphics::RenderGroup mCharacter;
     FlowerEngine::Graphics::DirectionalLight mDirectionalLight;
     FlowerEngine::Graphics::StandardEffect mStandardEffect;
+    FlowerEngine::Graphics::RenderTarget mRenderTarget;
 };

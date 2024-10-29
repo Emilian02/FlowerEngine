@@ -25,6 +25,7 @@ void App::Run(const AppConfig& config)
     DebugUI::StaticInitialize(handle, false, true);
     SimpleDraw::StaticIntialize(config.maxDrawLines);
     TextureCache::StaticInitialize("../../Assets/Images/");
+    ModelCache::StaticInitialize();
 
     //start state
     ASSERT(mCurrentState != nullptr, "App: no current state available");
@@ -43,6 +44,7 @@ void App::Run(const AppConfig& config)
         if (!myWindow.IsActive() || input->IsKeyPressed(KeyCode::ESCAPE))
         {
             Quit();
+            break;
         }
 
         if (mNextState != nullptr)
@@ -71,6 +73,7 @@ void App::Run(const AppConfig& config)
     mCurrentState->Terminate();
 
     //terminate singletons
+    ModelCache::StaticTerminate();
     TextureCache::StaticTerminate();
     SimpleDraw::StaticTerminate();
     DebugUI::StaticTerminate();

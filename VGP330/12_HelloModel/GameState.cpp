@@ -1,4 +1,4 @@
-#include "GameState.h"
+ #include "GameState.h"
 
 using namespace FlowerEngine;
 using namespace FlowerEngine::Math;
@@ -10,8 +10,8 @@ using namespace FlowerEngine::Input;
 
 void GameState::Initialize()
 {
-    mCamera.SetPosition({ 0.0f, 1.0f, -3.0f });
-    mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
+    mCamera.SetPosition({ 0.0f, 2.0f, -3.0f });
+    mCamera.SetLookAt({ 0.0f, 1.0f, 0.0f });
 
     mDirectionalLight.direction = Normalize({ 1.0f, -1.0f, 1.0f });
     mDirectionalLight.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -25,10 +25,10 @@ void GameState::Initialize()
     mStandardEffect.SetCamera(mCamera);
     mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
-    Model model;
-    ModelIO::LoadModel(L"../../Assets/Models/Character01/Ch35_nonPBR.model", model);
+    mCharacter.Initialize(L"../../Assets/Models/Character03/Ch15_nonPBR.model");
 
-    mCharacter.Initialize(model);
+    const uint32_t size = 512;
+    mRenderTarget.Initialize(size, size, Texture::Format::RGBA_U8);
 }
 
 void GameState::Terminate()
@@ -80,9 +80,20 @@ void GameState::UpdateCamera(float deltaTime)
 
 void GameState::Render()
 {
+    mCamera.SetAspectRatio(1.0f);
+    mRenderTarget.BeginRender();
+        mStandardEffect.Begin();
+            mStandardEffect.Render(mCharacter);
+        mStandardEffect.End();
+    mRenderTarget.EndRender();
+
+    mCamera.SetAspectRatio(0.0f);
     mStandardEffect.Begin();
         mStandardEffect.Render(mCharacter);
     mStandardEffect.End();
+
+    SimpleDraw::AddGroundPlane(10.0f, Colors::White);
+    SimpleDraw::Render(mCamera);
 }
 
 void GameState::DebugUI()
@@ -99,11 +110,17 @@ void GameState::DebugUI()
         ImGui::ColorEdit4("Diffuse##Light", &mDirectionalLight.diffuse.r);
         ImGui::ColorEdit4("Specular##Light", &mDirectionalLight.specular.r);
     }
+    ImGui::Separator();
+    ImGui::Text("RendeTarget");
+    ImGui::Image(
+        mRenderTarget.GetRawData(),
+        { 128, 128 },
+        { 0, 0 },
+        { 1, 1 },
+        { 1, 1, 1, 1},
+        { 1, 1, 1, 1}
+        );
 
-    if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-
-    }
     mStandardEffect.DebugUI();
     ImGui::End();
 }
