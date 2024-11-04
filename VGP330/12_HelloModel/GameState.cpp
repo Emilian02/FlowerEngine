@@ -6,12 +6,22 @@ using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Input;
 
-
+const char* gCharacters[] =
+{
+    "None",
+    "Character01",
+    "Character02"
+};
 
 void GameState::Initialize()
 {
     mCamera.SetPosition({ 0.0f, 2.0f, -3.0f });
     mCamera.SetLookAt({ 0.0f, 1.0f, 0.0f });
+    mCamera.SetAspectRatio(0.0f);
+
+    mRenderTargetCamera.SetPosition({ 0.0, 1.5f, -2.0f });
+    mRenderTargetCamera.SetLookAt({ 0.0f, 1.2f, 0.0f });
+    mRenderTargetCamera.SetAspectRatio(1.0f);
 
     mDirectionalLight.direction = Normalize({ 1.0f, -1.0f, 1.0f });
     mDirectionalLight.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
@@ -25,7 +35,15 @@ void GameState::Initialize()
     mStandardEffect.SetCamera(mCamera);
     mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
-    mCharacter.Initialize(L"../../Assets/Models/Character03/Ch15_nonPBR.model");
+    mTargetStandardEffect.Intitialize(shaderFile);
+    mTargetStandardEffect.SetCamera(mRenderTargetCamera);
+    mTargetStandardEffect.SetDirectionalLight(mDirectionalLight);
+
+    mCharacter01.Initialize(L"../../Assets/Models/Character02/YBot.model");
+    mCharacter01.transform.position = { -1.0f, 0.0f, 0.0f };
+
+    mCharacter02.Initialize(L"../../Assets/Models/Character04/XBot.model");
+    mCharacter02.transform.position = { 1.0f, 0.0f, 0.0f };
 
     const uint32_t size = 512;
     mRenderTarget.Initialize(size, size, Texture::Format::RGBA_U8);
@@ -33,8 +51,11 @@ void GameState::Initialize()
 
 void GameState::Terminate()
 {
+    mRenderTarget.Terminate();
+    mCharacter02.Terminate();
+    mCharacter01.Terminate();
+    mTargetStandardEffect.Terminate();
     mStandardEffect.Terminate();
-    mCharacter.Terminate();
 }
 
 void GameState::Update(float deltaTime)
@@ -80,16 +101,24 @@ void GameState::UpdateCamera(float deltaTime)
 
 void GameState::Render()
 {
-    mCamera.SetAspectRatio(1.0f);
     mRenderTarget.BeginRender();
-        mStandardEffect.Begin();
-            mStandardEffect.Render(mCharacter);
-        mStandardEffect.End();
+        mTargetStandardEffect.Begin();
+            if (mCharacterDraw == CharacterDraw::Character01)
+            {
+                mRenderTargetCamera.SetPosition(mCharacter01.transform.position + Vector3{0.0, 1.2f, -2.0f});
+                mTargetStandardEffect.Render(mCharacter01);
+            }
+            else if (mCharacterDraw == CharacterDraw::Character02)
+            {
+                mRenderTargetCamera.SetPosition(mCharacter02.transform.position + Vector3{ 0.0, 1.2f, -2.0f });
+                mTargetStandardEffect.Render(mCharacter02);
+            }
+         mTargetStandardEffect.End();
     mRenderTarget.EndRender();
 
-    mCamera.SetAspectRatio(0.0f);
     mStandardEffect.Begin();
-        mStandardEffect.Render(mCharacter);
+        mStandardEffect.Render(mCharacter01);
+        mStandardEffect.Render(mCharacter02);
     mStandardEffect.End();
 
     SimpleDraw::AddGroundPlane(10.0f, Colors::White);
@@ -99,6 +128,8 @@ void GameState::Render()
 void GameState::DebugUI()
 {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    characterIndex = static_cast<int>(mCharacterDraw);
+
     if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
     {
         if (ImGui::DragFloat3("Direction", &mDirectionalLight.direction.x, 0.001f))
@@ -110,6 +141,16 @@ void GameState::DebugUI()
         ImGui::ColorEdit4("Diffuse##Light", &mDirectionalLight.diffuse.r);
         ImGui::ColorEdit4("Specular##Light", &mDirectionalLight.specular.r);
     }
+
+    ImGui::Separator();
+    if (ImGui::CollapsingHeader("Character Selection", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        if (ImGui::Combo("Characters", &characterIndex, gCharacters, static_cast<int>(std::size(gCharacters))))
+        {
+            mCharacterDraw = (CharacterDraw)characterIndex;
+        }
+    }
+
     ImGui::Separator();
     ImGui::Text("RendeTarget");
     ImGui::Image(

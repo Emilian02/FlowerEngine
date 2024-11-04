@@ -140,7 +140,7 @@ std::string FindTexture(const aiScene* scene, const aiMaterial* aiMaterial,
         {
             std::filesystem::path emebeddedFilePath = texturePath.C_Str();
             std::string fileName = args.inputFileName.u8string();
-            fileName.erase(fileName.length() - 1);
+            fileName.erase(fileName.length() - 4);
             fileName += suffix;
             fileName += "_" + std::to_string(materialIndex);
             fileName += emebeddedFilePath.extension().u8string();
