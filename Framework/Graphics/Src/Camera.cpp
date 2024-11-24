@@ -42,7 +42,7 @@ void Camera::SetAspectRatio(float ratio)
 	mAspectRatio = ratio;
 }
 
-void Camera::SetSice(float width, float height)
+void Camera::SetSize(float width, float height)
 {
 	mWidth = width;
 	mHeight = height;
@@ -122,7 +122,7 @@ Math::Matrix4 FlowerEngine::Graphics::Camera::GetOrthographicMatrix() const
 		2.0f / w, 0.0f, 0.0f, 0.0f,
 		0.0f, 2.0f / h, 0.0f, 0.0f,
 		0.0f, 0.0f, 1 / (f - n), 0.0f,
-		0.0f, 0.0f, n / (n - n), 1.0f
+		0.0f, 0.0f, n / (n - f), 1.0f
 	};
 }
 

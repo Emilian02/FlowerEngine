@@ -24,7 +24,7 @@ namespace FlowerEngine::Graphics
 		void SetAspectRatio(float ratio);
 		
 		//Orthographic params
-		void SetSice(float width, float height);
+		void SetSize(float width, float height);
 
 		void SetNearPlane(float nearPlane);
 		void SetFarPlane(float farPlane);
