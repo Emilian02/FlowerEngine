@@ -50,10 +50,6 @@ void GameState::Initialize()
     MeshPC cubeMesh = MeshBuilder::CreateCubePC(0.5f);
     mObject.meshBuffer.Initialize(cubeMesh);
     mObject.transform.position.y = 0.5f;
-
-    GraphicsSystem* gs = GraphicsSystem::Get();
-    const uint32_t screenWidth = gs->GetBackBufferWidth();
-    const uint32_t screenHeight = gs->GetBackBufferHeight();
 }
 
 void GameState::Terminate()
