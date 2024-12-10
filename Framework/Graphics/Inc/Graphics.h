@@ -20,6 +20,7 @@
 #include "ModelIO.h"
 #include "PixelShader.h"
 #include "PostProcessingEffect.h"
+#include "PuddleEffect.h"
 #include "RenderObject.h"
 #include "RenderTarget.h"
 #include "Sampler.h"

@@ -84,7 +84,7 @@ float4 PS(VS_OUTPUT input) : SV_Target
     float d = saturate(dot(light, n));
     float4 diffuse = d * lightDiffuse * materialDiffuse;
     
-    // speculat color
+    // specular color
     float3 r = reflect(-light, n);
     float base = saturate(dot(r, view));
     float s = pow(base, materialPower);
