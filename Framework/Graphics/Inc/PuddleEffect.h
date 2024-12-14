@@ -59,7 +59,7 @@ namespace FlowerEngine::Graphics
         PixelShader mPixelShader;
         Sampler mSampler;
 
-        TextureCache mNoiseTexture;
+        //TextureCache mNoiseTexture;
 
         SettingsData mSettingsData;
         const Camera* mCamera = nullptr;

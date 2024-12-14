@@ -25,13 +25,13 @@ protected:
     FlowerEngine::Graphics::DirectionalLight mDirectionalLight;
 
     FlowerEngine::Graphics::StandardEffect mStandardEffect;
-    FlowerEngine::Graphics::TerrainEffect mTerrainEffect;
+    FlowerEngine::Graphics::PuddleEffect mPuddleEffect;
 
-    FlowerEngine::Graphics::Terrain mTerrain;
     FlowerEngine::Graphics::RenderGroup mCharacter01;
     FlowerEngine::Graphics::RenderGroup mCharacter02;
 
     FlowerEngine::Graphics::RenderObject mGround;
+    FlowerEngine::Graphics::Mesh mPlain;
 
     CharacterDraw mCharacterDraw = CharacterDraw::None;
 

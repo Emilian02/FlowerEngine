@@ -31,21 +31,22 @@ void GameState::Initialize()
     mStandardEffect.SetCamera(mCamera);
     mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
-    mTerrainEffect.Initialize();
-    mTerrainEffect.SetCamera(mCamera);
-    mTerrainEffect.SetDirectionalLight(mDirectionalLight);
+    mPuddleEffect.Initialize();
+    mPuddleEffect.SetCamera(mCamera);
+    mPuddleEffect.SetDirectionalLight(mDirectionalLight);
 
     mCharacter01.Initialize(L"../../Assets/Models/Character02/YBot.model");
     mCharacter01.transform.position = { -1.0f, 0.0f, 0.0f };
 
     mCharacter02.Initialize(L"../../Assets/Models/Character04/XBot.model");
     mCharacter02.transform.position = { 1.0f, 0.0f, 0.0f };
+    
+    mPlain = MeshBuilder::CreateGroundPlane(10, 10, 1.0f);
 
-    mTerrain.Initialize(L"../../Assets/Images/terrain/heightmap_512x512.raw", 20.0f, 10.0f);
-
-    mGround.meshBuffer.Initialize(mTerrain.GetMesh());
-    mGround.diffuseMapId = TextureCache::Get()->LoadTexture("terrain/dirt_seamless.jpg");
-    mGround.normalMapId = TextureCache::Get()->LoadTexture("terrain/grass_2048.jpg");
+    mGround.meshBuffer.Initialize(mPlain);
+    mGround.diffuseMapId = TextureCache::Get()->LoadTexture("terrain/concrete_floor_worn_001_diff_2k.jpg");
+    mGround.normalMapId = TextureCache::Get()->LoadTexture("terrain/concrete_floor_worn_001_disp_2k.png");
+    mGround.noiseMapId = TextureCache::Get()->LoadTexture("Terrain-Height-Maps/terrain_map-0.jpg");
 }
 
 void GameState::Terminate()
@@ -53,7 +54,7 @@ void GameState::Terminate()
     mGround.Terminate();
     mCharacter02.Terminate();
     mCharacter01.Terminate();
-    mTerrainEffect.Terminate();
+    mPuddleEffect.Terminate();
     mStandardEffect.Terminate();
 }
 
@@ -96,11 +97,6 @@ void GameState::UpdateCamera(float deltaTime)
         mCamera.Yaw(input->GetMouseMoveX() * turnSpeed);
         mCamera.Pitch(input->GetMouseMoveY() * turnSpeed);
     }
-
-    Vector3 camPos = mCamera.GetPosition();
-    float height = mTerrain.GetHeight(camPos);
-    camPos.y = height + 1.5f;
-    mCamera.SetPosition(camPos);
 }
 
 void GameState::Render()
@@ -110,9 +106,9 @@ void GameState::Render()
         mStandardEffect.Render(mCharacter02);
     mStandardEffect.End();
 
-    mTerrainEffect.Begin();
-        mTerrainEffect.Render(mGround);
-    mTerrainEffect.End();
+    mPuddleEffect.Begin();
+        mPuddleEffect.Render(mGround);
+    mPuddleEffect.End();
 }
 
 void GameState::DebugUI()
@@ -143,6 +139,7 @@ void GameState::DebugUI()
 
     ImGui::Separator();
     mStandardEffect.DebugUI();
-    mTerrainEffect.DebugUI();
+    ImGui::Separator();
+    mPuddleEffect.DebugUI();
     ImGui::End();
 }

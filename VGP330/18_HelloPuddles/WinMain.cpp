@@ -7,7 +7,7 @@ using namespace FlowerEngine;
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE, LPSTR, int)
 {
     AppConfig config;
-    config.appName = L"Hello Terrain";
+    config.appName = L"Hello Puddles";
 
     App& myApp = MainApp();
     myApp.AddState<GameState>("GameState");

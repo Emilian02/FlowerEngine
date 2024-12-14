@@ -23,6 +23,7 @@ namespace FlowerEngine::Graphics
         TextureId normalMapId;
         TextureId specMapId;
         TextureId bumpMapId;
+        TextureId noiseMapId;
     };
 
     class RenderGroup

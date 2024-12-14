@@ -21,12 +21,12 @@ void PuddleEffect::Initialize()
     mSettingsBuffer.Initialize();
     mSampler.Initialize(Sampler::Filter::Linear, Sampler::AddressMode::Wrap);
 
-    mNoiseTexture.LoadTexture(L"../../Assets/Images/Terrain-Heights-Maps/terrain_map-0.jpg");
+    //mNoiseTexture.LoadTexture(L"../../Assets/Images/Terrain-Heights-Maps/terrain_map-0.jpg");
 }
 
 void PuddleEffect::Terminate()
 {
-    mNoiseTexture.StaticTerminate();
+    //mNoiseTexture.StaticTerminate();
     mSampler.Terminate();
     mSettingsBuffer.Terminate();
     mMaterialBuffer.Terminate();
@@ -79,11 +79,10 @@ void PuddleEffect::Render(const RenderObject& renderObject)
     mLightBuffer.Update(*mDirectionalLight);
     mMaterialBuffer.Update(renderObject.material);
 
-    mNoiseTexture.BindPS(4);
-
     TextureCache* tc = TextureCache::Get();
     tc->BindPS(renderObject.diffuseMapId, 0);
     tc->BindPS(renderObject.normalMapId, 1);
+    tc->BindPS(renderObject.noiseMapId, 2);
 
     renderObject.meshBuffer.Render();
 }
@@ -92,10 +91,10 @@ void PuddleEffect::DebugUI()
 {
     if (ImGui::CollapsingHeader("PuddleEffect", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        ImGui::DragFloat("Intensity", &mSettingsData.puddleIntensity, 0.01f, 0.0f, 1.0f);
-        ImGui::DragFloat("Shininess", &mSettingsData.puddleShininess, 0.01f, 0.0f, 1.0f);
-        ImGui::DragFloat("Blend Height", &mSettingsData.blendHeight, 0.01f, 0.0f, 10.0f);
-        ImGui::DragFloat("Blend Thickness", &mSettingsData.blendThickness, 0.01f, 0.0f, 10.0f);
+        ImGui::DragFloat("Intensity", &mSettingsData.puddleIntensity, 0.001f);
+        ImGui::DragFloat("Shininess", &mSettingsData.puddleShininess, 0.001f);
+        ImGui::DragFloat("Blend Height", &mSettingsData.blendHeight, 0.001f);
+        ImGui::DragFloat("Blend Thickness", &mSettingsData.blendThickness, 0.001f);
     }
 }
 
