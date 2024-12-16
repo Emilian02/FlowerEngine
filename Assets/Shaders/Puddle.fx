@@ -33,8 +33,8 @@ cbuffer SettingsBuffer : register(b3)
     float puddleIntensity;
 }
 
-Texture2D lowMap : register(t0);
-Texture2D highMap : register(t1);
+Texture2D diffuseMap : register(t0);
+Texture2D normalMap : register(t1);
 Texture2D noiseMap : register(t2);
 
 SamplerState textureSampler : register(s0);
@@ -77,50 +77,51 @@ float4 PS(VS_OUTPUT input) : SV_Target
 {
     float3 n = normalize(input.worldNormal);
     float3 light = normalize(input.dirToLight);
-    float3 view = normalize(input.dirToView);        
-    
+    float3 view = normalize(input.dirToView);
+
     // ambient color
     float4 ambient = lightAmbient * materialAmbient;
-    
+ 
     // diffuse color
     float d = saturate(dot(light, n));
     float4 diffuse = d * lightDiffuse * materialDiffuse;
-    
+
     // specular color
     float3 r = reflect(-light, n);
     float base = saturate(dot(r, view));
-    float s = pow(base, materialPower * puddleShininess);
+    float s = (puddleShininess > 0.0f) ? pow(base, materialPower * puddleShininess) : 0.0f;
     float4 specular = s * lightSpecular * materialSpecular;
-    
+ 
     // emissive
     float4 emissive = materialEmissive;
     
-    // texture color
-    float4 colorToUse = lowMap.Sample(textureSampler, input.texCoord);
-    
+    // texture sampling
+    float4 baseColor = diffuseMap.Sample(textureSampler, input.texCoord);
+    float4 normalColor = normalMap.Sample(textureSampler, input.texCoord);
+    // No repititons
+    float noiseValue = noiseMap.Sample(textureSampler, input.texCoord).r;
+    // Repititions
+    //float noiseValue = noiseMap.Sample(textureSampler, input.texCoord * 5.0f).r;
+ 
+    // Height-based blending
     float blendStart = blendHeight - (blendThickness * 0.5f);
     float blendEnd = blendHeight + (blendThickness * 0.5f);
-    float4 highMapColor = highMap.Sample(textureSampler, input.texCoord);
-    
-    if (input.worldPosition.y > blendEnd)
-    {
-        colorToUse = highMapColor;
-    }
-    else if (input.worldPosition.y > blendStart)
-    {
-        float t = saturate((input.worldPosition.y - blendStart) / blendThickness);
-        colorToUse = lerp(colorToUse, highMapColor, t);
-    }
-    
-    // puddle Effect
-    float noiseValue = noiseMap.Sample(textureSampler, input.texCoord * 5.0f).r; // Sample noise texture
-    float puddleFactor = saturate((blendHeight - input.worldPosition.y) / blendThickness); // Fade puddles at edges
-    puddleFactor *= puddleIntensity; // Scale by intensity
+    float puddleFactor = saturate((blendHeight - input.worldPosition.y) / blendThickness);
+    puddleFactor *= noiseValue * puddleIntensity;
 
-    // adjusting diffuse and specular based on puddleFactor
-    diffuse *= (1.0f - puddleFactor); // Reduce diffuse for puddles
-    specular += puddleFactor * noiseValue; // Add specular highlights
-    
-    float4 finalColor = (emissive + ambient + diffuse) * colorToUse + specular;
+    // Wet vs. Dry diffuse blending
+    float4 wetDiffuseColor = lerp(baseColor, float4(0.2, 0.2, 0.25, 0.5), puddleFactor); // Wet areas darker/bluer
+    diffuse *= lerp(1.0f, 0.7f, puddleFactor); // Reduce diffuse intensity in wet areas
+
+    // Normals for Wet Effect
+    float3 unpackedNormal = normalize(normalColor.rgb * 2.0f - 1.0f); // Unpack normal map
+    unpackedNormal = lerp(unpackedNormal, float3(0.0, 0.0, 1.0), puddleFactor); // Flatten normals in wet areas
+    n = normalize(n + unpackedNormal * puddleFactor); // Combine with world normal
+
+    // Specular Highlights for Wet Areas
+    float wetSpecularFactor = (puddleShininess > 0.0f) ? pow(saturate(dot(reflect(-light, n), view)), materialPower * puddleShininess) : 0.0f;
+    specular += puddleFactor * wetSpecularFactor * lightSpecular;
+
+    float4 finalColor = (emissive + ambient + diffuse) * wetDiffuseColor + specular;
     return finalColor;
 }
