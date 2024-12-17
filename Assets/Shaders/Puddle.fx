@@ -1,5 +1,3 @@
-// Description: terrain fx file that blends textures
-// the local space of vertices into NDC space
 
 cbuffer TransformBuffer : register(b0)
 {
