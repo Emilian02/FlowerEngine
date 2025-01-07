@@ -2,6 +2,7 @@
 
 #include "Common.h"
 
+#include "Animation.h"
 #include "Color.h"
 #include "GraphicsSystem.h"
 #include "BillboardEffect.h"
@@ -11,6 +12,7 @@
 #include "DebugUI.h"
 #include "DirectionalLight.h"
 #include "GaussianBlurEffect.h"
+#include "Keyframe.h"
 #include "Material.h"
 #include "MeshBuffer.h"
 #include "MeshBuilder.h"
