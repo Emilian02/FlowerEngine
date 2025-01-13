@@ -6,61 +6,76 @@ using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Input;
 
-const char* gCharacters[] =
-{
-    "None",
-    "Character01",
-    "Character02"
-};
-
 void GameState::Initialize()
 {
-    mCamera.SetPosition({ 0.0f, 2.0f, -3.0f });
+    mCamera.SetPosition({ 0.0f, 2.0f, -5.0f });
     mCamera.SetLookAt({ 0.0f, 1.0f, 0.0f });
     mCamera.SetAspectRatio(0.0f);
-
-    mRenderTargetCamera.SetPosition({ 0.0, 1.5f, -2.0f });
-    mRenderTargetCamera.SetLookAt({ 0.0f, 1.2f, 0.0f });
-    mRenderTargetCamera.SetAspectRatio(1.0f);
 
     mDirectionalLight.direction = Normalize({ 1.0f, -1.0f, 1.0f });
     mDirectionalLight.ambient = { 0.3f, 0.3f, 0.3f, 1.0f };
     mDirectionalLight.diffuse = { 0.7f, 0.7f, 0.7f, 1.0f };
     mDirectionalLight.specular = { 0.9f, 0.9f, 0.9f, 1.0f };
 
-    Mesh mesh = MeshBuilder::CreateSphere(100, 100, 1.0f);
-
     std::filesystem::path shaderFile = L"../../Assets/Shaders/Standard.fx";
     mStandardEffect.Intitialize(shaderFile);
     mStandardEffect.SetCamera(mCamera);
     mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
-    mTargetStandardEffect.Intitialize(shaderFile);
-    mTargetStandardEffect.SetCamera(mRenderTargetCamera);
-    mTargetStandardEffect.SetDirectionalLight(mDirectionalLight);
+    Mesh ball = MeshBuilder::CreateSphere(60, 60, 0.5f);
+    mBall.meshBuffer.Initialize(ball);
+    mBall.diffuseMapId = TextureCache::Get()->LoadTexture("misc/basketball.jpg");
 
-    mCharacter01.Initialize(L"../../Assets/Models/Character02/YBot.model");
-    mCharacter01.transform.position = { -1.0f, 0.0f, 0.0f };
+    Mesh ground = MeshBuilder::CreateGroundPlane(10, 10, 1.0f);
+    mGround.meshBuffer.Initialize(ground);
+    mGround.diffuseMapId = TextureCache::Get()->LoadTexture("misc/concrete.jpg");
 
-    mCharacter02.Initialize(L"../../Assets/Models/Character04/XBot.model");
-    mCharacter02.transform.position = { 1.0f, 0.0f, 0.0f };
+    mAnimationTime = 0.0f;
 
-    const uint32_t size = 512;
-    mRenderTarget.Initialize(size, size, Texture::Format::RGBA_U8);
+    mAnimation = AnimationBuilder()
+        .AddPositionKey({ -3.0f, 2.0f, 0.0f }, 0.0f)
+        .AddPositionKey({ -2.5f, 1.5f, 0.0f }, 0.5f)
+        .AddPositionKey({ -2.0f, 1.0f, 0.0f }, 1.0f)
+        .AddPositionKey({ -1.5f, 0.5f, 0.0f }, 1.5f)
+        .AddPositionKey({ -1.0f, 1.0f, 0.0f }, 2.0f)
+        .AddPositionKey({ -0.5f, 1.5f, 0.0f }, 2.5f)
+        .AddPositionKey({  0.0f, 2.0f, 0.0f }, 3.0f)
+        .AddPositionKey({  0.5f, 2.5f, 0.0f }, 3.5f)
+        .AddScaleKey({1.0f, 1.0f, 1.0f}, 0.0f)
+        .AddScaleKey({1.0f, 1.0f, 1.0f}, 1.4f)
+        .AddScaleKey({0.75f, 1.0f, 1.0f}, 1.5f)
+        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.6f)
+        .AddRotationKey(Quaternion::Identity, 0.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -90.0f * Math::Constants::DegToRad), 0.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -180.0f * Math::Constants::DegToRad), 1.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -270.0f * Math::Constants::DegToRad), 1.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -360.0f * Math::Constants::DegToRad), 2.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -90.0f * Math::Constants::DegToRad), 2.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -180.0f * Math::Constants::DegToRad), 3.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -270.0f * Math::Constants::DegToRad), 3.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -360.0f * Math::Constants::DegToRad), 4.0f)
+        .Build();
 }
 
 void GameState::Terminate()
 {
-    mRenderTarget.Terminate();
-    mCharacter02.Terminate();
-    mCharacter01.Terminate();
-    mTargetStandardEffect.Terminate();
+    mGround.Terminate();
+    mBall.Terminate();
     mStandardEffect.Terminate();
 }
 
 void GameState::Update(float deltaTime)
 {
     UpdateCamera(deltaTime);
+
+    if (mAnimation.GetDuration() > 0.0f)
+    {
+        mAnimationTime += deltaTime;
+        while (mAnimationTime > mAnimation.GetDuration())
+        {
+            mAnimationTime -= mAnimation.GetDuration();
+        }
+    }
 }
 
 void GameState::UpdateCamera(float deltaTime)
@@ -101,34 +116,16 @@ void GameState::UpdateCamera(float deltaTime)
 
 void GameState::Render()
 {
-    mRenderTarget.BeginRender();
-        mTargetStandardEffect.Begin();
-            if (mCharacterDraw == CharacterDraw::Character01)
-            {
-                mRenderTargetCamera.SetPosition(mCharacter01.transform.position + Vector3{0.0, 1.2f, -2.0f});
-                mTargetStandardEffect.Render(mCharacter01);
-            }
-            else if (mCharacterDraw == CharacterDraw::Character02)
-            {
-                mRenderTargetCamera.SetPosition(mCharacter02.transform.position + Vector3{ 0.0, 1.2f, -2.0f });
-                mTargetStandardEffect.Render(mCharacter02);
-            }
-         mTargetStandardEffect.End();
-    mRenderTarget.EndRender();
-
+    mBall.transform = mAnimation.GetTransform(mAnimationTime);
     mStandardEffect.Begin();
-        mStandardEffect.Render(mCharacter01);
-        mStandardEffect.Render(mCharacter02);
+        mStandardEffect.Render(mGround);
+        mStandardEffect.Render(mBall);
     mStandardEffect.End();
-
-    SimpleDraw::AddGroundPlane(10.0f, Colors::White);
-    SimpleDraw::Render(mCamera);
 }
 
 void GameState::DebugUI()
 {
     ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    characterIndex = static_cast<int>(mCharacterDraw);
 
     if (ImGui::CollapsingHeader("Light", ImGuiTreeNodeFlags_DefaultOpen))
     {
@@ -141,27 +138,5 @@ void GameState::DebugUI()
         ImGui::ColorEdit4("Diffuse##Light", &mDirectionalLight.diffuse.r);
         ImGui::ColorEdit4("Specular##Light", &mDirectionalLight.specular.r);
     }
-
-    ImGui::Separator();
-    if (ImGui::CollapsingHeader("Character Selection", ImGuiTreeNodeFlags_DefaultOpen))
-    {
-        if (ImGui::Combo("Characters", &characterIndex, gCharacters, static_cast<int>(std::size(gCharacters))))
-        {
-            mCharacterDraw = (CharacterDraw)characterIndex;
-        }
-    }
-
-    ImGui::Separator();
-    ImGui::Text("RendeTarget");
-    ImGui::Image(
-        mRenderTarget.GetRawData(),
-        { 128, 128 },
-        { 0, 0 },
-        { 1, 1 },
-        { 1, 1, 1, 1},
-        { 1, 1, 1, 1}
-        );
-
-    mStandardEffect.DebugUI();
     ImGui::End();
 }

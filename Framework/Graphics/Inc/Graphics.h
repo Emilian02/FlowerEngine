@@ -3,6 +3,7 @@
 #include "Common.h"
 
 #include "Animation.h"
+#include "AnimationBuilder.h"
 #include "Color.h"
 #include "GraphicsSystem.h"
 #include "BillboardEffect.h"
