@@ -46,8 +46,8 @@ namespace FlowerEngine::Graphics
 		Math::Vector3 normal;
 		Math::Vector3 tangent;
 		Math::Vector2 uvCoord;
-		int boneIndices[MaxBoneWeights] = {};
-		float boneWeights[MaxBoneWeights] = {};
+		int boneIndices[MaxBoneWeights] = {0};
+		float boneWeights[MaxBoneWeights] = {0.0f};
 	};
 }
 

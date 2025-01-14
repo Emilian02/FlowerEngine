@@ -4,6 +4,8 @@
 
 #include "Animation.h"
 #include "AnimationBuilder.h"
+#include "AnimationUtil.h"
+#include "Bone.h"
 #include "Color.h"
 #include "GraphicsSystem.h"
 #include "BillboardEffect.h"
@@ -27,6 +29,7 @@
 #include "RenderObject.h"
 #include "RenderTarget.h"
 #include "Sampler.h"
+#include "Skeleton.h"
 #include "ShadowEffect.h"
 #include "SimpleDraw.h"
 #include "StandardEffect.h"
