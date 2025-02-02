@@ -26,6 +26,10 @@ void GameState::Initialize()
 
     mCharacter01.Initialize(L"../../Assets/Models/Character04/XBot.model", &mCharacterAnimator);
     ModelCache::Get()->AddAnimation(mCharacter01.modelId, L"../../Assets/Models/Character04/SillyDancing.animset");
+    ModelCache::Get()->AddAnimation(mCharacter01.modelId, L"../../Assets/Models/Character04/ShovedReactionWithSpin.animset");
+    ModelCache::Get()->AddAnimation(mCharacter01.modelId, L"../../Assets/Models/Character04/RunLookBack.animset");
+    ModelCache::Get()->AddAnimation(mCharacter01.modelId, L"../../Assets/Models/Character04/RemovingDriver.animset");
+    ModelCache::Get()->AddAnimation(mCharacter01.modelId, L"../../Assets/Models/Character04/SoccerTrip.animset");
     mCharacterAnimator.Initialize(mCharacter01.modelId);
 
     Mesh ground = MeshBuilder::CreateGroundPlane(10, 10, 1.0f);

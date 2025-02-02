@@ -1,2 +1,2 @@
 -scale 0.01 ../../Assets/Models/Character04/XBot.fbx ../../Assets/Models/Character04/XBot.model
--scale 0.01 -animOnly 1 ../../Assets/Models/Character04/SillyDancing.fbx ../../Assets/Models/Character04/SillyDancing.model
+-scale 0.01 -animOnly 1 ../../Assets/Models/Character04/SoccerTrip.fbx ../../Assets/Models/Character04/SoccerTrip.model
