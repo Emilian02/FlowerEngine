@@ -3,7 +3,9 @@
 #include "Common.h"
 
 #include "Animation.h"
+#include "Animator.h"
 #include "AnimationBuilder.h"
+#include "AnimationClip.h"
 #include "AnimationUtil.h"
 #include "Bone.h"
 #include "Color.h"
