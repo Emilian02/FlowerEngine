@@ -227,7 +227,7 @@ void StandardEffect::DebugUI()
         ImGui::DragFloat("DepthBias", &mSettingsData.depthBias, 0.000001f, 0.0f, 1.0f, "%.6f");
 
         bool useSkinning = mSettingsData.useSkinning > 0;
-        if (ImGui::Checkbox("UseSkinning", &useShadowMap))
+        if (ImGui::Checkbox("UseSkinning", &useSkinning))
         {
             mSettingsData.useSkinning = useSkinning ? 1 : 0;
         }
