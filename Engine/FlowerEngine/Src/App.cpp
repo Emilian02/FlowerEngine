@@ -6,6 +6,7 @@ using namespace FlowerEngine;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Input;
+using namespace FlowerEngine::Physics;
 
 void App::Run(const AppConfig& config)
 {
@@ -26,6 +27,9 @@ void App::Run(const AppConfig& config)
     SimpleDraw::StaticIntialize(config.maxDrawLines);
     TextureCache::StaticInitialize("../../Assets/Images/");
     ModelCache::StaticInitialize();
+
+    PhysicsWorld::Settings settings;
+    PhysicsWorld::StaticInitialize(settings);
 
     //start state
     ASSERT(mCurrentState != nullptr, "App: no current state available");
@@ -60,6 +64,7 @@ void App::Run(const AppConfig& config)
 #endif
         {
             mCurrentState->Update(deltaTime);
+            PhysicsWorld::Get()->Update(deltaTime);
         }
 
         gs->BeginRender();
@@ -73,6 +78,7 @@ void App::Run(const AppConfig& config)
     mCurrentState->Terminate();
 
     //terminate singletons
+    PhysicsWorld::StaticTerminate();
     ModelCache::StaticTerminate();
     TextureCache::StaticTerminate();
     SimpleDraw::StaticTerminate();
