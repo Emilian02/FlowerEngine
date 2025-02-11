@@ -1,5 +1,7 @@
 #pragma once
 
+#include "PhysicsDebugDraw.h"
+
 namespace FlowerEngine::Physics
 {
     class PhysicsObject;
@@ -44,5 +46,8 @@ namespace FlowerEngine::Physics
 
         using PhysicsObjects = std::vector<PhysicsObject*>;
         PhysicsObjects mPhysicsObjects;
+
+        PhysicsDebugDraw mPhysicsDebugDraw;
+        bool mDebugDraw = false;
     };
 }

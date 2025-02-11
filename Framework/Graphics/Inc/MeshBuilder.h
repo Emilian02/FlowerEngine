@@ -10,6 +10,7 @@ namespace FlowerEngine::Graphics
         // Cube
         static MeshPC CreateCubePC(float size);
         static MeshPX CreateCubePX(float size);
+        static Mesh CreateCube(float size);
 
         // SkyStuff
         static MeshPX CreateSkyboxPX(float size);

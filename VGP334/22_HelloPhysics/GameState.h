@@ -24,8 +24,18 @@ protected:
     FlowerEngine::Physics::CollisionShape mBallShape;
     FlowerEngine::Physics::RigidBody mBallRB;
 
+    // ground info
     FlowerEngine::Graphics::RenderObject mGround;
     FlowerEngine::Physics::CollisionShape mGroundShape;
     FlowerEngine::Physics::RigidBody mGroundRB;
+
+    struct BoxData
+    {
+        FlowerEngine::Graphics::RenderObject box;
+        FlowerEngine::Physics::CollisionShape boxShape;
+        FlowerEngine::Physics::RigidBody boxRB;
+    };
+    using Boxes = std::vector<BoxData>;
+    Boxes mBoxes;
 
 };
