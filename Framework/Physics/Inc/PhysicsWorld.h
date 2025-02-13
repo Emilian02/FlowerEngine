@@ -41,7 +41,6 @@ namespace FlowerEngine::Physics
         btBroadphaseInterface* mInterface = nullptr;
         btCollisionDispatcher* mDispacther = nullptr;
         btDefaultCollisionConfiguration* mCollisionConfiguration = nullptr;
-        btDiscreteDynamicsWorld* mDynamicsWorld = nullptr;
         btSequentialImpulseConstraintSolver* mSolver = nullptr;
 
         using PhysicsObjects = std::vector<PhysicsObject*>;
@@ -49,5 +48,14 @@ namespace FlowerEngine::Physics
 
         PhysicsDebugDraw mPhysicsDebugDraw;
         bool mDebugDraw = false;
+
+        friend class SoftBody;
+#ifdef USE_SOFT_BODY
+        btSoftRigidDynamicsWorld* mDynamicsWorld = nullptr;
+        btSoftRigidDynamicsWorld* GetSoftBodyWorld() { return mDynamicsWorld; }
+#else
+        btDiscreteDynamicsWorld* mDynamicsWorld = nullptr;
+        btSoftRigidDynamicsWorld* GetSoftBodyWorld() { return nullptr; }
+#endif
     };
 }

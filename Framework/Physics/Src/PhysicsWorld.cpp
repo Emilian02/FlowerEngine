@@ -40,11 +40,18 @@ PhysicsWorld::~PhysicsWorld()
 void PhysicsWorld::Initialize(const Settings& settings)
 {
     mSettings = settings;
-    mCollisionConfiguration = new btDefaultCollisionConfiguration();
-    mDispacther = new btCollisionDispatcher(mCollisionConfiguration);
     mInterface = new btDbvtBroadphase();
     mSolver = new btSequentialImpulseConstraintSolver();
+#ifdef USE_SOFT_BODY
+    mCollisionConfiguration = new btSoftBodyRigidBodyCollisionConfiguration();
+    mDispacther = new btCollisionDispatcher(mCollisionConfiguration);
+    mDynamicsWorld = new btSoftRigidDynamicsWorld(mDispacther, mInterface, mSolver, mCollisionConfiguration);
+#else
+    mCollisionConfiguration = new btDefaultCollisionConfiguration();
+    mDispacther = new btCollisionDispatcher(mCollisionConfiguration);
     mDynamicsWorld = new btDiscreteDynamicsWorld(mDispacther, mInterface, mSolver, mCollisionConfiguration);
+#endif 
+
     mDynamicsWorld->setGravity(TobtVector3(settings.gravity));
     mDynamicsWorld->setDebugDrawer(&mPhysicsDebugDraw);
 }
@@ -106,6 +113,12 @@ void PhysicsWorld::Register(PhysicsObject* physicsObject)
     if (iter == mPhysicsObjects.end())
     {
         mPhysicsObjects.push_back(physicsObject);
+#ifdef USE_SOFT_BODY
+        if (physicsObject->GetSoftBody())
+        {
+            mDynamicsWorld->addSoftBody(physicsObject->GetSoftBody());
+        }
+#endif
         if (physicsObject->GetRigidBody())
         {
             mDynamicsWorld->addRigidBody(physicsObject->GetRigidBody());
@@ -118,6 +131,13 @@ void PhysicsWorld::Unregister(PhysicsObject* physicsObject)
     auto iter = std::find(mPhysicsObjects.begin(), mPhysicsObjects.end(), physicsObject);
     if (iter != mPhysicsObjects.end())
     {
+
+#ifdef USE_SOFT_BODY
+        if (physicsObject->GetSoftBody())
+        {
+            mDynamicsWorld->removeSoftBody(physicsObject->GetSoftBody());
+        }
+#endif
         if (physicsObject->GetRigidBody())
         {
             mDynamicsWorld->removeRigidBody(physicsObject->GetRigidBody());

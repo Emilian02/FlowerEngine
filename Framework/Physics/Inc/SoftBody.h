@@ -15,5 +15,9 @@ namespace FlowerEngine::Physics
 
     private:
         void SyncWithGraphics() override;
+        btSoftBody* GetSoftBody() override;
+
+        btSoftBody* mSoftBody = nullptr;
+        Graphics::Mesh* mMesh = nullptr;
     };
 }
