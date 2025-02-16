@@ -15,7 +15,7 @@ public:
 protected:
     void UpdateCamera(float deltaTime);
 
-    // leve fata
+    // level data
     FlowerEngine::Graphics::Camera mCamera;
     FlowerEngine::Graphics::DirectionalLight mDirectionalLight;
     FlowerEngine::Graphics::StandardEffect mStandardEffect;

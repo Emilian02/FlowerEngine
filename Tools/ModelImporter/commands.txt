@@ -1,2 +1,2 @@
--scale 0.01 ../../Assets/Models/Character04/XBot.fbx ../../Assets/Models/Character04/XBot.model
+-scale 0.01 ../../Assets/Models/Character05/Jackie/Ch29_nonPBR.fbx ../../Assets/Models/Character05/Jackie/Ch29_nonPBR.model
 -scale 0.01 -animOnly 1 ../../Assets/Models/Character04/SoccerTrip.fbx ../../Assets/Models/Character04/SoccerTrip.model
