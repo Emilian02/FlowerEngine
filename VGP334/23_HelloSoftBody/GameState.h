@@ -29,7 +29,7 @@ protected:
     FlowerEngine::Physics::CollisionShape mGroundShape;
     FlowerEngine::Physics::RigidBody mGroundRB;
 
-    // clost info
+    // clott info
     FlowerEngine::Graphics::RenderObject mCloth;
     FlowerEngine::Graphics::Mesh mClothMesh;
     FlowerEngine::Physics::SoftBody mClothSoftBody;

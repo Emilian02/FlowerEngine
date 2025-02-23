@@ -113,7 +113,7 @@ void GameState::Update(float deltaTime)
         mBallRB.SetVelocity({ 0.0f, 10.0f, 0.0f });
     }
 
-    if (InputSystem::Get()->IsMouseDown(MouseButton::LBUTTON))
+    if (InputSystem::Get()->IsMousePressed(MouseButton::LBUTTON))
     {
         Math::Vector3 spawnPos = mCamera.GetPosition() + mCamera.GetDirection() * 0.5f;
         mBallRB.SetPosition(spawnPos);
