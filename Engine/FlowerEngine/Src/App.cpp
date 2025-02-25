@@ -1,12 +1,14 @@
 #include "Precompiled.h"
 #include "App.h"
 #include "AppState.h"
+#include "EventManager.h"
 
 using namespace FlowerEngine;
 using namespace FlowerEngine::Core;
 using namespace FlowerEngine::Graphics;
 using namespace FlowerEngine::Input;
 using namespace FlowerEngine::Physics;
+using namespace FlowerEngine::Audio;
 
 void App::Run(const AppConfig& config)
 {
@@ -27,6 +29,9 @@ void App::Run(const AppConfig& config)
     SimpleDraw::StaticIntialize(config.maxDrawLines);
     TextureCache::StaticInitialize("../../Assets/Images/");
     ModelCache::StaticInitialize();
+    EventManager::StaticInitialize();
+    AudioSystem::StaticInitialize();
+    SoundEffectManager::StaticInitialize("../../Assets/Sounds/");
 
     PhysicsWorld::Settings settings;
     PhysicsWorld::StaticInitialize(settings);
@@ -50,6 +55,8 @@ void App::Run(const AppConfig& config)
             Quit();
             break;
         }
+
+        AudioSystem::Get()->Update();
 
         if (mNextState != nullptr)
         {
@@ -79,6 +86,9 @@ void App::Run(const AppConfig& config)
 
     //terminate singletons
     PhysicsWorld::StaticTerminate();
+    SoundEffectManager::StaticTerminate();
+    AudioSystem::StaticTerminate();
+    EventManager::StaticTerminate();
     ModelCache::StaticTerminate();
     TextureCache::StaticTerminate();
     SimpleDraw::StaticTerminate();

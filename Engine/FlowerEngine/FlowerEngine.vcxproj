@@ -138,11 +138,14 @@
     <ClInclude Include="Inc\App.h" />
     <ClInclude Include="Inc\AppState.h" />
     <ClInclude Include="Inc\Common.h" />
+    <ClInclude Include="Inc\Event.h" />
+    <ClInclude Include="Inc\EventManager.h" />
     <ClInclude Include="Inc\FlowerEngine.h" />
     <ClInclude Include="Src\Precompiled.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\App.cpp" />
+    <ClCompile Include="Src\EventManager.cpp" />
     <ClCompile Include="Src\FlowerEngine.cpp" />
     <ClCompile Include="Src\Precompiled.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -150,6 +153,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\Audio\Audio.vcxproj">
+      <Project>{25c62776-ef57-46a0-894a-6ea8ed7ca3a3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Core\Core.vcxproj">
       <Project>{ddf5399b-e800-4faa-bbbb-4e31641dc351}</Project>
     </ProjectReference>

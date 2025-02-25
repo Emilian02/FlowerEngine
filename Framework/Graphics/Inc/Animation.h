@@ -11,6 +11,8 @@ namespace FlowerEngine::Graphics
         Transform GetTransform(float time) const;
         float GetDuration() const;
 
+        void PlayEvents(float prevTime, float curTime);
+
     private:
         Math::Vector3 GetPosition(float time) const;
         Math::Quaternion GetRotation(float time) const;
@@ -22,6 +24,7 @@ namespace FlowerEngine::Graphics
         PositionKeys mPositionKeys;
         RotationKeys mRotationKeys;
         ScaleKeys mScaleKeys;
+        EventKeys mEventKeys;
         float mDuration;
     };
 }
