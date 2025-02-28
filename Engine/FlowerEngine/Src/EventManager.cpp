@@ -30,7 +30,7 @@ EventManager* EventManager::Get()
     return sEventManager.get();
 }
 
-void EventManager::Boradcast(const Event& e)
+void EventManager::Broadcast(const Event& e)
 {
     sEventManager->BroadcastPrivate(e);
 }

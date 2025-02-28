@@ -23,7 +23,11 @@ void GameState::Initialize()
     mStandardEffect.SetCamera(mCamera);
     mStandardEffect.SetDirectionalLight(mDirectionalLight);
 
-    Mesh ball = MeshBuilder::CreateSphere(60, 60, 0.5f);
+    mCharacter.Initialize(L"../../Assets/Models/Character04/XBot.model", &mCharacterAnimator);
+    ModelCache::Get()->AddAnimation(mCharacter.modelId, L"../../Assets/Models/Character04/ShovedReactionWithSpin.animset");
+    mCharacterAnimator.Initialize(mCharacter.modelId);
+
+    Mesh ball = MeshBuilder::CreateSphere(60, 60, 0.2f);
     mBall.meshBuffer.Initialize(ball);
     mBall.diffuseMapId = TextureCache::Get()->LoadTexture("misc/basketball.jpg");
 
@@ -32,33 +36,35 @@ void GameState::Initialize()
     mGround.diffuseMapId = TextureCache::Get()->LoadTexture("misc/concrete.jpg");
 
     mAnimationTime = 0.0f;
+    mAnimationCharcterTime = 0.0f;
+
+    mAnimationCharacter = AnimationBuilder()
+        .AddPositionKey({ 0.0f, 0.0f, 0.0f }, 0.0f)
+        .AddEventKey(std::bind(&GameState::StartAnimationEvent, this), 0.1f)
+        .AddEventKey(std::bind(&GameState::OnMoveEvent, this), 1.0f)
+        .Build();
 
     mAnimation = AnimationBuilder()
-        .AddPositionKey({ -3.0f, 2.0f, 0.0f }, 0.0f)
-        .AddPositionKey({ -2.5f, 1.5f, 0.0f }, 0.5f)
-        .AddPositionKey({ -2.0f, 1.0f, 0.0f }, 1.0f)
-        .AddPositionKey({ -1.5f, 0.5f, 0.0f }, 1.5f)
-        .AddPositionKey({ -1.0f, 1.0f, 0.0f }, 2.0f)
-        .AddPositionKey({ -0.5f, 1.5f, 0.0f }, 2.5f)
-        .AddPositionKey({ 0.0f, 2.0f, 0.0f }, 3.0f)
-        .AddPositionKey({ 0.5f, 2.5f, 0.0f }, 3.5f)
+        .AddPositionKey({ 0.0f, 3.0f, -3.0f }, 0.0f)
+        .AddPositionKey({ 0.0f, 2.0f, -2.0f }, 0.5f)
+        .AddPositionKey({ 0.0f, 1.5f, -1.0f }, 1.0f)
         .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 0.0f)
         .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.4f)
-        .AddScaleKey({ 0.75f, 1.0f, 1.0f }, 1.5f)
+        .AddScaleKey({ 1.0f, 1.0f, 0.75f }, 1.5f)
         .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.6f)
         .AddRotationKey(Quaternion::Identity, 0.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -90.0f * Math::Constants::DegToRad), 0.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -180.0f * Math::Constants::DegToRad), 1.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -270.0f * Math::Constants::DegToRad), 1.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -360.0f * Math::Constants::DegToRad), 2.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -90.0f * Math::Constants::DegToRad), 2.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -180.0f * Math::Constants::DegToRad), 3.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -270.0f * Math::Constants::DegToRad), 3.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::ZAxis, -360.0f * Math::Constants::DegToRad), 4.0f)
-        .AddEventKey(std::bind(&GameState::OnMoveEvent, this), 3.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 0.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 1.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 1.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 2.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 2.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 3.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 3.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 4.0f)
         .Build();
     EventManager* em = EventManager::Get();
     mSpacePressedEventId = em->AddListener(EventType::SpacePressed, std::bind(&GameState::OnSpacePressedEvent, this, std::placeholders::_1));
+    mPKeyEventId = em->AddListener(EventType::PKey, std::bind(&GameState::OnPKeyPressedEvent, this, std::placeholders::_1));
 
     mGunEventId = SoundEffectManager::Get()->Load("photongun1.wav");
     mExplosionEventId = SoundEffectManager::Get()->Load("explosion.wav");
@@ -67,8 +73,10 @@ void GameState::Initialize()
 void GameState::Terminate()
 {
     EventManager::Get() ->RemoveListener(EventType::SpacePressed, mSpacePressedEventId);
+    EventManager::Get() ->RemoveListener(EventType::PKey, mPKeyEventId);
     mGround.Terminate();
     mBall.Terminate();
+    mCharacter.Terminate();
     mStandardEffect.Terminate();
 }
 
@@ -87,10 +95,32 @@ void GameState::Update(float deltaTime)
         }
     }
 
+    if (mAnimationCharacter.GetDuration() > 0.0f)
+    {
+        float prevTime = mAnimationCharcterTime;
+        mAnimationCharcterTime += deltaTime;
+        mAnimationCharacter.PlayEvents(prevTime, mAnimationCharcterTime);
+        if (mCharacterAnimator.IsFinished())
+        {
+            while (mAnimationCharcterTime > mAnimationCharacter.GetDuration())
+            {
+                mAnimationCharcterTime -= mAnimationCharacter.GetDuration();
+            }
+        }
+    }
+
+    mCharacterAnimator.Update(deltaTime);
+
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SPACE))
     {
         SpacePressedEvent spe;
-        EventManager::Boradcast(spe);
+        EventManager::Broadcast(spe);
+    }
+
+    if (InputSystem::Get()->IsKeyPressed(KeyCode::P))
+    {
+        PKeyPresssedEvent pKey;
+        EventManager::Broadcast(pKey);
     }
 }
 
@@ -136,17 +166,32 @@ void GameState::OnMoveEvent()
     SoundEffectManager::Get()->Play(mExplosionEventId);
 }
 
+void GameState::StartAnimationEvent()
+{
+    mCharacterAnimator.PlayAnimation(0, false);
+}
+
 void GameState::OnSpacePressedEvent(const FlowerEngine::Event& e)
 {
-    LOG("HEY THE SPACE WAS PRESSED");
     SoundEffectManager::Get()->Play(mGunEventId);
+}
+
+void GameState::OnPKeyPressedEvent(const FlowerEngine::Event& e)
+{
+    mScaleUp += Math::Vector3{ 0.5f, 0.5f, 0.5f };
 }
 
 void GameState::Render()
 {
     mBall.transform = mAnimation.GetTransform(mAnimationTime);
-    mBall.transform.position += mOffset;
+    mBall.transform.scale += mScaleUp;
+    mCharacter.transform = mAnimationCharacter.GetTransform(mAnimationCharcterTime);
+    mCharacter.transform.position += mOffset;
     mStandardEffect.Begin();
+        AnimationUtil::BoneTransforms boneTranforms;
+        AnimationUtil::ComputeBoneTransforms(mCharacter.modelId, boneTranforms, &mCharacterAnimator);
+        AnimationUtil::DrawSkeleton(mCharacter.modelId, boneTranforms);
+        mStandardEffect.Render(mCharacter);
         mStandardEffect.Render(mGround);
         mStandardEffect.Render(mBall);
     mStandardEffect.End();

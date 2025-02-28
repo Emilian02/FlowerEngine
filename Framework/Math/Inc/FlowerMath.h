@@ -98,6 +98,14 @@ namespace FlowerEngine::Math
         return { x, y, z };
     }
 
+    inline Vector3 Rotate(const Vector3& v, const Math::Quaternion& q)
+    {
+        Math::Quaternion p = Math::Quaternion(v.x, v.y, v.z, 0.0f);
+        Math::Quaternion result = q * p * Math::Quaternion::Conjugate(q);
+
+        return Vector3(result.x, result.y, result.z);
+    }
+
     inline Matrix4 Transpose(const Matrix4& m)
     {
         return Matrix4(

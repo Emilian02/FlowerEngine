@@ -13,7 +13,7 @@ namespace FlowerEngine
         static void StaticInitialize();
         static void StaticTerminate();
         static EventManager* Get();
-        static void Boradcast(const Event& e);
+        static void Broadcast(const Event& e);
 
         EventManager() = default;
         ~EventManager();

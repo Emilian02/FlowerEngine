@@ -6,6 +6,7 @@ namespace FlowerEngine
     {
         None,
         SpacePressed,
+        PKey,
     };
     class Event
     {
@@ -24,5 +25,11 @@ namespace FlowerEngine
     {
     public:
         SpacePressedEvent() : Event(EventType::SpacePressed) {}
+    };
+
+    class PKeyPresssedEvent : public Event
+    {
+    public:
+        PKeyPresssedEvent() : Event(EventType::PKey) {};
     };
 }

@@ -25,6 +25,15 @@ namespace FlowerEngine::Math
         // Unary operators		
         Quaternion operator+(const Quaternion& rhs) const { return Quaternion(x + rhs.x, y + rhs.y, z + rhs.z, w + rhs.w); }
         Quaternion operator*(float s) const { return Quaternion(x * s, y * s, z * s, w * s); }
+        Quaternion operator*(const Quaternion& other) const
+        {
+            return Quaternion(
+                w * other.x + x * other.w + y * other.z - z * other.y,
+                w * other.y + x * other.z + y * other.w - z * other.x,
+                w * other.z + x * other.y + y * other.x - z * other.w,
+                w * other.w + x * other.x + y * other.y - z * other.z
+            );
+        }
         Quaternion operator/(float s) const { return Quaternion(x / s, y / s, z / s, w / s); }
 
         // Constants
