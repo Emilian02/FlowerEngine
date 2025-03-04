@@ -104,6 +104,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Audio", "Framework\Audio\Au
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTKAudio_Desktop_2022_Win8", "..\CamuEngine\External\DirectXTK\Audio\DirectXTKAudio_Desktop_2022_Win8.vcxproj", "{4F150A30-CECB-49D1-8283-6A3F57438CF5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "26_HelloProceduralAnimation", "VGP334\26_HelloProceduralAnimation\26_HelloProceduralAnimation.vcxproj", "{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -392,6 +394,14 @@ Global
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x64.Build.0 = Release|x64
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x86.ActiveCfg = Release|Win32
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5}.Release|x86.Build.0 = Release|Win32
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Debug|x64.ActiveCfg = Debug|x64
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Debug|x64.Build.0 = Debug|x64
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Debug|x86.ActiveCfg = Debug|Win32
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Debug|x86.Build.0 = Debug|Win32
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Release|x64.ActiveCfg = Release|x64
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Release|x64.Build.0 = Release|x64
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Release|x86.ActiveCfg = Release|Win32
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -433,6 +443,7 @@ Global
 		{3A679D91-1AD4-4AAD-8B78-62FDDD05B6AF} = {F1058072-2549-4BA2-A166-F70A40B6DFC5}
 		{25C62776-EF57-46A0-894A-6EA8ED7CA3A3} = {A0644E8D-6DBF-4BE9-96E2-9C6191F50163}
 		{4F150A30-CECB-49D1-8283-6A3F57438CF5} = {941CE311-AD00-4010-8290-BFB112F42C17}
+		{9B3B2B56-5264-4ED6-9FC5-2FA9CCC2B55A} = {F1058072-2549-4BA2-A166-F70A40B6DFC5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D8761E04-3BE2-4FA0-98C5-194156D48A72}

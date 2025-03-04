@@ -17,6 +17,7 @@ namespace FlowerEngine::Physics
 
         void SetPosition(const FlowerEngine::Math::Vector3& position);
         void SetVelocity(const FlowerEngine::Math::Vector3& velocity);
+        const Math::Vector3 GetVelocity() const;
 
         void Activate();
         void Deactivate();
