@@ -15,6 +15,7 @@ namespace FlowerEngine::Graphics
         // SkyStuff
         static MeshPX CreateSkyboxPX(float size);
         static MeshPX CreateSkySpherePX(int slices, int rings, float radius);
+        static Mesh CreateSkySphere(int slices, int rings, float radius);
         
         // Rectangle
         static MeshPC CreateRectPC(float width, float length, float height);
