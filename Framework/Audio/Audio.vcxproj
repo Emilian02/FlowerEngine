@@ -135,7 +135,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CamuEngine\External\DirectXTK\Audio\DirectXTKAudio_Desktop_2022_Win8.vcxproj">
+    <ProjectReference Include="..\..\External\DirectXTK\Audio\DirectXTKAudio_Desktop_2022_Win8.vcxproj">
       <Project>{4f150a30-cecb-49d1-8283-6a3f57438cf5}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Core\Core.vcxproj">

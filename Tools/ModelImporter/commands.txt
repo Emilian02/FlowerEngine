@@ -1,2 +1,5 @@
--scale 0.01 ../../Assets/Models/Character05/Jackie/Ch29_nonPBR.fbx ../../Assets/Models/Character05/Jackie/Ch29_nonPBR.model
--scale 0.01 -animOnly 1 ../../Assets/Models/Character04/SoccerTrip.fbx ../../Assets/Models/Character04/SoccerTrip.model
+-scale 0.01 ../../Assets/Models/Character02/YBot.fbx ../../Assets/Models/Character02/YBot.model
+-scale 0.01 -animOnly 1 ../../Assets/Models/Character04/FlipKick.fbx ../../Assets/Models/Character04/FlipKick.model
+-scale 0.01 -animOnly 1 ../../Assets/Models/Character04/FallingDown.fbx ../../Assets/Models/Character04/FallingDown.model
+-scale 0.01 -animOnly 1 ../../Assets/Models/Character02/SittingLaughing.fbx ../../Assets/Models/Character02/SittingLaughing.model
+-scale 0.01 -animOnly 1 ../../Assets/Models/Character02/Sitting.fbx ../../Assets/Models/Character02/Sitting.model
