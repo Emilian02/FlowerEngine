@@ -16,17 +16,21 @@ protected:
     void UpdateCamera(float deltaTime);
 
     // XBot Events
+    void XBotTPose();
     void OnMoveEvent();
     void StartAnimationXBotEvent();
     void XBotFallingEvent();
     void XBotBlood();
+    void XBotTurnOffBlood();
+    void XBotStandsUp();
+    void XBotFlipKick();
 
     // YBot Events
     void StartAnimationYBotEvent();
+    void YBotLaughingSitting();
 
     // Animations Events
     void EndOfAnimation();
-    void ResetAnimation();
     void PauseAnimation();
     void UnpauseAnimation();
 
@@ -38,6 +42,7 @@ protected:
 
     bool mEndOfAnimation = false;
     bool mPauseAnimation = false;
+    bool mTurnParticles = false;
     float mTotalTimeAnimation = 0.0f;
 
     FlowerEngine::Graphics::Camera mCamera;
@@ -51,6 +56,12 @@ protected:
 
     //Ball
     FlowerEngine::Graphics::RenderObject mBall;
+
+    // Sun
+    FlowerEngine::Graphics::RenderObject mSun;
+
+    // YBotIndicator
+    FlowerEngine::Graphics::RenderObject mYBotIndicator;
 
     // Refence Point
     FlowerEngine::Graphics::RenderObject mCube;
@@ -76,6 +87,7 @@ protected:
     FlowerEngine::Graphics::Animation mBallAnimation;
     FlowerEngine::Graphics::Animation mAnimationXBot;
     FlowerEngine::Graphics::Animation mAnimationYBot;
+    FlowerEngine::Graphics::Animation mAnimationYBotIndicator;
     FlowerEngine::Graphics::Animation mCameraAnimationPosition;
     FlowerEngine::Graphics::Animation mCameraAnimationLookAt;
 

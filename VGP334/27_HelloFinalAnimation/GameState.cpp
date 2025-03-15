@@ -33,6 +33,7 @@ void GameState::Initialize()
     mXBot.Initialize(L"../../Assets/Models/Character04/XBot.model", &mXBotAnimator);
     ModelCache::Get()->AddAnimation(mXBot.modelId, L"../../Assets/Models/Character04/ShovedReactionWithSpin.animset");
     ModelCache::Get()->AddAnimation(mXBot.modelId, L"../../Assets/Models/Character04/FallingDown.animset");
+    ModelCache::Get()->AddAnimation(mXBot.modelId, L"../../Assets/Models/Character04/GettingUp.animset");
     ModelCache::Get()->AddAnimation(mXBot.modelId, L"../../Assets/Models/Character04/FlipKick.animset");
     mXBotAnimator.Initialize(mXBot.modelId);
 
@@ -45,6 +46,16 @@ void GameState::Initialize()
     mBall.meshBuffer.Initialize(ball);
     mBall.diffuseMapId = TextureCache::Get()->LoadTexture("misc/basketball.jpg");
 
+    Mesh sun = MeshBuilder::CreateSphere(50, 50, 50.0f);
+    mSun.meshBuffer.Initialize(sun);
+    mSun.diffuseMapId = TextureCache::Get()->LoadTexture("planets/sun.jpg");
+    mSun.transform.position = { -250.0f, 250.0f, 0.0f };
+
+    Mesh indicator = MeshBuilder::CreateSphere(50, 50, 1.0f);
+    mYBotIndicator.meshBuffer.Initialize(indicator);
+    mYBotIndicator.diffuseMapId = TextureCache::Get()->LoadTexture("sprites/blue.jpg");
+    mYBotIndicator.transform.position = { 0.0f, -10.0f, 0.0f };
+
     Mesh cube = MeshBuilder::CreateCube(0.2f);
     mCube.meshBuffer.Initialize(cube);
     mCube.diffuseMapId = TextureCache::Get()->LoadTexture("sprites/green.jpg");
@@ -54,12 +65,12 @@ void GameState::Initialize()
     mGround.meshBuffer.Initialize(ground);
     mGround.diffuseMapId = TextureCache::Get()->LoadTexture("misc/concrete.jpg");
 
-    Mesh skySphere = MeshBuilder::CreateSkySphere(200, 200, 200.0f);
+    Mesh skySphere = MeshBuilder::CreateSkySphere(200, 200, 500.0f);
     mSkySphere.meshBuffer.Initialize(skySphere);
     mSkySphere.diffuseMapId = TextureCache::Get()->LoadTexture("skysphere/space.jpg");
 
     mAnimationTime = 0.0f;
-    mTotalTimeAnimation = 20.0f;
+    mTotalTimeAnimation = 45.0f;
 
     LoadAnimationForBall();
     LoadAnimationForXBot();
@@ -73,48 +84,45 @@ void GameState::LoadAnimationForBall()
 {
     mBallAnimation = AnimationBuilder()
         .AddPositionKey({ 0.0f, 6.0f, -4.5f }, 0.0f)
-        .AddPositionKey({ 0.0f, 6.0f, -4.5f }, 2.0f)
-        .AddPositionKey({ 0.0f, 1.5f, -1.2f }, 3.5f)
-        .AddPositionKey({ 0.0f, 1.0f, -2.0f }, 4.0f)
-        .AddPositionKey({ 0.0f, 0.2f, -2.7f }, 5.0f)
-        .AddPositionKey({ 0.0f, 1.5f, -3.4f }, 6.0f)
-        .AddPositionKey({ 0.0f, 3.0f, -4.0f }, 7.0f)
-        .AddPositionKey({ 0.0f, 2.9f, -4.1f }, 7.1f)
-        .AddPositionKey({ 0.0f, 2.8f, -4.2f }, 7.2f)
-        .AddPositionKey({ 0.0f, 2.7f, -4.3f }, 7.3f)
-        .AddPositionKey({ 0.0f, 2.6f, -4.4f }, 7.4f)
-        .AddPositionKey({ 0.0f, 2.2f, -4.8f }, 7.8f)
-        .AddPositionKey({ 0.0f, 1.8f, -5.2f }, 8.2f)
-        .AddPositionKey({ 0.0f, 1.5f, -5.5f }, 8.5f)
+        .AddPositionKey({ 0.0f, 6.0f, -4.5f }, 0.8f)
+        .AddPositionKey({ 0.0f, 1.5f, -1.2f }, 1.2f)
+        .AddPositionKey({ 0.0f, 1.0f, -2.0f }, 1.6f)
+        .AddPositionKey({ 0.0f, 0.2f, -2.7f }, 2.0f)
+        .AddPositionKey({ 0.0f, 1.5f, -3.4f }, 2.5f)
+        .AddPositionKey({ 0.0f, 3.0f, -4.0f }, 3.0f)
+        .AddPositionKey({ 0.0f, 2.9f, -4.1f }, 3.1f)
+        .AddPositionKey({ 0.0f, 2.8f, -4.2f }, 3.2f)
+        .AddPositionKey({ 0.0f, 2.7f, -4.3f }, 3.3f)
+        .AddPositionKey({ 0.0f, 2.6f, -4.4f }, 3.4f)
+        .AddPositionKey({ 0.0f, 2.2f, -4.8f }, 3.8f)
+        .AddPositionKey({ 0.0f, 1.8f, -5.2f }, 4.2f)
+        .AddPositionKey({ 0.0f, 1.5f, -5.5f }, 4.5f)
+        .AddPositionKey({ 0.0f, 0.2f, -8.5f }, 10.5f)
         .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 0.0f)
-        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 3.3f)
-        .AddScaleKey({ 1.0f, 0.75f, 1.75f }, 3.4f)
-        .AddScaleKey({ 1.0f, 0.5f, 0.5f }, 3.6f)
-        .AddScaleKey({ 1.0f, 0.75f, 1.75f }, 3.8f)
-        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 3.9f)
-        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 4.8f)
-        .AddScaleKey({ 1.0f, 0.75f, 1.75f }, 4.9f)
-        .AddScaleKey({ 1.0f, 0.5f, 0.5f }, 5.1f)
-        .AddScaleKey({ 1.0f, 0.75f, 1.75f }, 5.3f)
-        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 5.4f)
+        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.1f)
+        .AddScaleKey({ 1.0f, 0.75f, 1.25f }, 1.2f)
+        .AddScaleKey({ 1.0f, 0.5f, 0.5f }, 1.3f)
+        .AddScaleKey({ 1.0f, 0.75f, 1.25f }, 1.4f)
+        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.6f)
+        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 1.8f)
+        .AddScaleKey({ 1.0f, 0.75f, 1.25f }, 1.9f)
+        .AddScaleKey({ 1.0f, 0.5f, 0.5f }, 2.1f)
+        .AddScaleKey({ 1.0f, 0.75f, 1.25f }, 2.2f)
+        .AddScaleKey({ 1.0f, 1.0f, 1.0f }, 2.3f)
         .AddRotationKey(Quaternion::Identity, 0.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 0.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 1.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 1.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 2.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 2.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 3.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 3.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 4.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 4.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 5.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 6.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 6.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 7.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 7.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 8.0f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 8.5f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 9.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 0.1f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 0.4f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 0.8f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 1.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 1.2f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 1.6f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 2.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 2.4f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 2.8f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 270.0f * Math::Constants::DegToRad), 3.2f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 180.0f * Math::Constants::DegToRad), 3.6f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 90.0f * Math::Constants::DegToRad), 4.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::XAxis, 360.0f * Math::Constants::DegToRad), 4.5f)
         .AddEventKey(std::bind(&GameState::EndOfAnimation, this), mTotalTimeAnimation)
         .Build();
 }
@@ -123,16 +131,23 @@ void GameState::LoadAnimationForXBot()
 {
     mAnimationXBot = AnimationBuilder()
         .AddPositionKey({ 0.0f, 0.0f, 0.0f }, 0.0f)
-        .AddPositionKey({ 0.0f, 0.0f, 0.0f }, 5.8f)
-        .AddPositionKey({ 0.5f, 0.0f, -2.5f }, 5.9f)
-        .AddPositionKey({ 0.5f, 0.0f, -2.5f }, 14.0f)
+        .AddPositionKey({ 0.0f, 0.0f, 0.0f }, 1.9f)
+        .AddPositionKey({ 0.5f, 0.0f, -2.5f }, 2.0f)
+        .AddPositionKey({ 0.5f, 0.0f, -2.5f }, 23.5f)
+        .AddPositionKey({ -3.0f, 0.0f, -0.8f }, 23.5f)
         .AddRotationKey(Quaternion::Identity, 0.0f)
-        .AddRotationKey(Quaternion::Identity, 5.8f)
-        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::YAxis, 180.0f * Math::Constants::DegToRad), 5.9f)
+        .AddRotationKey(Quaternion::Identity, 1.9f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::YAxis, 180.0f * Math::Constants::DegToRad), 2.0f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::YAxis, 180.0f * Math::Constants::DegToRad), 22.5f)
+        .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::YAxis, 90.0f * Math::Constants::DegToRad), 22.6f)
         .AddEventKey(std::bind(&GameState::StartAnimationXBotEvent, this), 0.0001f)
-        .AddEventKey(std::bind(&GameState::OnMoveEvent, this), 3.7f)
-        .AddEventKey(std::bind(&GameState::XBotFallingEvent, this), 6.0f)
-        .AddEventKey(std::bind(&GameState::XBotBlood, this), 13.0f)
+        .AddEventKey(std::bind(&GameState::OnMoveEvent, this), 1.6f)
+        .AddEventKey(std::bind(&GameState::XBotFallingEvent, this), 2.0f)
+        .AddEventKey(std::bind(&GameState::XBotBlood, this), 4.4f)
+        .AddEventKey(std::bind(&GameState::XBotTurnOffBlood, this), 5.0f)
+        .AddEventKey(std::bind(&GameState::XBotStandsUp, this), 16.3f)
+        .AddEventKey(std::bind(&GameState::XBotTPose, this), 22.4f)
+        .AddEventKey(std::bind(&GameState::XBotFlipKick, this), 24.5f)
         .AddEventKey(std::bind(&GameState::EndOfAnimation, this), mTotalTimeAnimation)
         .Build();
 }
@@ -141,10 +156,22 @@ void GameState::LoadAnimationForYBot()
 {
     mAnimationYBot = AnimationBuilder()
         .AddPositionKey({ -5.0f, 0.0f, -1.0f }, 0.0f)
-        .AddPositionKey({ -5.0f, 0.0f, -1.0f }, 4.0f)
+        .AddPositionKey({ -5.0f, 0.0f, -1.0f }, 25.3f)
+        .AddPositionKey({ -25.0f, 12.0f, -1.0f }, 25.5f)
+        .AddPositionKey({ -25.0f, 12.0f, -1.0f }, 27.3f)
+        .AddPositionKey({ -150.0f, 150.0f, 0.0f }, 27.5f)
+        .AddPositionKey(mSun.transform.position, 34.0f)
         .AddRotationKey(Quaternion::CreateFromAxisAngle(Math::Vector3::YAxis, -90.0f * Math::Constants::DegToRad), 0.0f)
         .AddEventKey(std::bind(&GameState::StartAnimationYBotEvent, this), 0.0001f)
+        .AddEventKey(std::bind(&GameState::YBotLaughingSitting, this), 7.4f)
         .AddEventKey(std::bind(&GameState::EndOfAnimation, this), mTotalTimeAnimation)
+        .Build();
+
+    mAnimationYBotIndicator = AnimationBuilder()
+        .AddPositionKey({ 0.0f, -10.0f, 0.0f }, 27.3f)
+        .AddPositionKey({ -25.0f, 12.0f, -1.0f }, 27.3f)
+        .AddPositionKey({ -150.0f, 150.0f, 0.0f }, 27.5f)
+        .AddPositionKey(mSun.transform.position, 34.0f)
         .Build();
 }
 
@@ -152,15 +179,41 @@ void GameState::LoadAnimationForCamera()
 {
     mCameraAnimationPosition = AnimationBuilder()
         .AddPositionKey({ -6.0f, 2.0f, -6.0f }, 0.0001f)
-        .AddPositionKey({ -6.0f, 2.0f, -6.0f }, 12.9f)
-        .AddPositionKey({ 0.7f, 1.0f, -2.5f }, 13.0f)
+        .AddPositionKey({ -6.0f, 2.0f, -6.0f }, 3.4f)
+        .AddPositionKey({ 0.5f, 1.0f, -2.5f }, 3.8f)
+        .AddPositionKey({ 0.5f, 1.0f, -2.5f }, 7.3f)
+        .AddPositionKey({ -3.5f, 1.2f, -1.0f }, 7.5f)
+        .AddPositionKey({ -3.5f, 1.2f, -1.0f }, 14.3f)
+        .AddPositionKey({ 0.5f, 1.0f, -2.5f }, 14.5f)
+        .AddPositionKey({ 0.5f, 1.0f, -2.5f }, 16.0f)
+        .AddPositionKey({ 0.5f, 2.5f, -1.0f }, 17.0f)
+        .AddPositionKey({ 0.5f, 2.5f, -1.0f }, 18.0f)
+        .AddPositionKey({ 1.3f, 1.6f, -2.1f }, 19.0f)
+        .AddPositionKey({ 1.3f, 1.6f, -2.1f }, 22.4f)
+        .AddPositionKey({ -3.5f, 1.5f, -4.0f }, 22.4f)
+        .AddPositionKey({ -3.5f, 1.5f, -4.0f }, 30.0f)
+        .AddPositionKey({ -300.0f, 300.0f, -200.0f }, 30.0f)
         .AddEventKey(std::bind(&GameState::EndOfAnimation, this), mTotalTimeAnimation)
         .Build();
 
     mCameraAnimationLookAt = AnimationBuilder()
         .AddPositionKey({ -1.5f, 1.0f, 0.0f }, 0.0001f)
-        .AddPositionKey({ -1.5f, 1.0f, 0.0f }, 12.9f)
-        .AddPositionKey({ 40.0f, -40.0f, -40.0f }, 13.0f)
+        .AddPositionKey({ -1.5f, 1.0f, 0.0f }, 3.4f)
+        .AddPositionKey({ 40.0f, -40.0f, -40.0f }, 3.8f)
+        .AddPositionKey({ 40.0f, -40.0f, -40.0f }, 7.3f)
+        .AddPositionKey({ -40.0f, 0.0f, 0.0f }, 7.5f)
+        .AddPositionKey({ -40.0f, 0.0f, 0.0f }, 14.3f)
+        .AddPositionKey({ 40.0f, -40.0f, -40.0f }, 14.5f)
+        .AddPositionKey({ 40.0f, -40.0f, -40.0f }, 16.0f)
+        .AddPositionKey({ 30.0f, -40.0f, -70.0f }, 17.0f)
+        .AddPositionKey({ 30.0f, -40.0f, -70.0f }, 18.0f)
+        .AddPositionKey({ -40.0f, 0.0f, 0.0f }, 19.0f)
+        .AddPositionKey({ -40.0f, 0.0f, 0.0f }, 22.4f)
+        .AddPositionKey({ 0.0f, 0.0f, 40.0f }, 22.4f)
+        .AddPositionKey({ 0.0f, 0.0f, 40.0f }, 27.3f)
+        .AddPositionKey( mSun.transform.position , 27.3f)
+        .AddPositionKey( mSun.transform.position , 27.3f)
+        .AddPositionKey( mSun.transform.position , 30.0f)
         .AddEventKey(std::bind(&GameState::EndOfAnimation, this), mTotalTimeAnimation)
         .Build();
 }
@@ -170,6 +223,8 @@ void GameState::Terminate()
     mSkySphere.Terminate();
     mGround.Terminate();
     mCube.Terminate();
+    mYBotIndicator.Terminate();
+    mSun.Terminate();
     mBall.Terminate();
     mYBot.Terminate();
     mXBot.Terminate();
@@ -188,9 +243,9 @@ void GameState::Update(float deltaTime)
     else
     {
         float prevTime = mAnimationTime;
+        mAnimationTime += deltaTime;
         if (mBallAnimation.GetDuration() > 0.0f)
         {
-            mAnimationTime += deltaTime;
             mBallAnimation.PlayEvents(prevTime, mAnimationTime);
             while (mAnimationTime > mBallAnimation.GetDuration())
             {
@@ -200,7 +255,6 @@ void GameState::Update(float deltaTime)
 
         if (mAnimationXBot.GetDuration() > 0.0f)
         {
-            mAnimationTime += deltaTime;
             mAnimationXBot.PlayEvents(prevTime, mAnimationTime);
             while (mAnimationTime > mAnimationXBot.GetDuration())
             {
@@ -210,7 +264,6 @@ void GameState::Update(float deltaTime)
 
         if (mAnimationYBot.GetDuration() > 0.0f)
         {
-            mAnimationTime += deltaTime;
             mAnimationYBot.PlayEvents(prevTime, mAnimationTime);
             while (mAnimationTime > mAnimationYBot.GetDuration())
             {
@@ -218,7 +271,10 @@ void GameState::Update(float deltaTime)
             }
         }
 
-        mParticleSystem.Update(deltaTime);
+        if (mTurnParticles)
+        {
+            mParticleSystem.Update(deltaTime);
+        }
 
         mXBotAnimator.Update(deltaTime);
         mYBotAnimator.Update(deltaTime);
@@ -229,14 +285,10 @@ void GameState::Update(float deltaTime)
         mXBot.transform.position += mOffset;
 
         mYBot.transform = mAnimationYBot.GetTransform(mAnimationTime);
+        mYBotIndicator.transform = mAnimationYBotIndicator.GetTransform(mAnimationTime);
 
         mCamera.SetPosition(mCameraAnimationPosition.GetTransform(mAnimationTime).position);
         mCamera.SetLookAt(mCameraAnimationLookAt.GetTransform(mAnimationTime).position);
-    }
-
-    if (input->IsKeyPressed(KeyCode::SPACE))
-    {
-        ResetAnimation();
     }
 
     if (input->IsKeyPressed(KeyCode::P))
@@ -286,6 +338,11 @@ void GameState::UpdateCamera(float deltaTime)
 }
 
 
+void GameState::XBotTPose()
+{
+    mXBotAnimator.PlayAnimation(-1, false);
+}
+
 void GameState::OnMoveEvent()
 {
     mOffset.x += 0.5f;
@@ -303,23 +360,39 @@ void GameState::XBotFallingEvent()
 
 void GameState::XBotBlood()
 {
+    mTurnParticles = true;
     ParticleSystemInfo info;
     info.textureId = TextureCache::Get()->LoadTexture("sprites/explosion.png");
     info.maxParticles = 100;
-    info.particlePerEmit = { 1 , 20 };
-    info.delay = 1.0f;
+    info.particlePerEmit = { 10 , 10 };
+    info.delay = 0.2f;
     info.lifeTime = FLT_MAX;
     info.timeBetweenEmit = { 0.2f, 0.4f };
     info.spawnAngle = { -30.0f, 30.0f };
     info.spawnSpeed = { 1.0f, 3.0f };
     info.spawnLifeTime = { 2.0f, 4.0f };
     info.spawnDirection = Math::Vector3::YAxis;
-    info.spawnPosition = { 0.5f, 1.0f, -2.5f };
-    info.startScale = { Math::Vector3::One, Math::Vector3::One };
-    info.endScale = { Math::Vector3::One, Math::Vector3::One };
+    info.spawnPosition = { 2.5f, 0.0f, -4.0f };
+    info.startScale = { {0.3f, 0.3f, 0.3f}, {0.5f, 0.5f, 0.5f} };
+    info.endScale = { {0.3f, 0.3f, 0.3f}, {0.5f, 0.5f, 0.5f} };
     info.startColor = { Colors::OrangeRed, Colors::OrangeRed };
     info.endColor = { Colors::OrangeRed, Colors::OrangeRed };
     mParticleSystem.Initialize(info);
+}
+
+void GameState::XBotTurnOffBlood()
+{
+    mTurnParticles = false;
+}
+
+void GameState::XBotStandsUp()
+{
+    mXBotAnimator.PlayAnimation(2, false);
+}
+
+void GameState::XBotFlipKick()
+{
+    mXBotAnimator.PlayAnimation(3, false);
 }
 
 void GameState::StartAnimationYBotEvent()
@@ -327,16 +400,14 @@ void GameState::StartAnimationYBotEvent()
     mYBotAnimator.PlayAnimation(1, true);
 }
 
+void GameState::YBotLaughingSitting()
+{
+    mYBotAnimator.PlayAnimation(2, true);
+}
+
 void GameState::EndOfAnimation()
 {
     mEndOfAnimation = true;
-}
-
-void GameState::ResetAnimation()
-{
-    mEndOfAnimation = false;
-    mAnimationTime = 0.0f;
-    mOffset -= mOffset;
 }
 
 void GameState::PauseAnimation()
@@ -359,6 +430,8 @@ void GameState::Render()
         mStandardEffect.Render(mYBot);
         mStandardEffect.Render(mGround);
         mStandardEffect.Render(mBall);
+        mStandardEffect.Render(mSun);
+        mStandardEffect.Render(mYBotIndicator);
         mStandardEffect.Render(mCube);
         mStandardEffect.Render(mSkySphere);
     mStandardEffect.End();

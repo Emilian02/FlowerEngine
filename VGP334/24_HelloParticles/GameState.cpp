@@ -26,7 +26,7 @@ void GameState::Initialize()
     info.spawnSpeed = { 1.0f, 3.0f };
     info.spawnLifeTime = { 0.5f, 2.0f };
     info.spawnDirection = Math::Vector3::YAxis;
-    info.spawnPosition = Math::Vector3::Zero;
+    info.spawnPosition = {0.0f, 1.0f, -1.0f};
     info.startScale = { Math::Vector3::One, Math::Vector3::One };
     info.endScale = { Math::Vector3::One, Math::Vector3::One };
     info.startColor = { Colors::White, Colors::White };

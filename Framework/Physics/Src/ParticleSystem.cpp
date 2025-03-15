@@ -150,5 +150,5 @@ void ParticleSystem::SpawnSingleParticle()
     info.endColor = mInfo.endColor.GetRandom();
     info.startScale = mInfo.startScale.GetRandom();
     info.endScale = mInfo.endScale.GetRandom();
-    particle->Activate(info, mInfo.spawnDirection, spawnDirection * speed);
+    particle->Activate(info, mInfo.spawnPosition, spawnDirection * speed);
 }
