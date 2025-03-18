@@ -24,6 +24,8 @@ protected:
     void XBotTurnOffBlood();
     void XBotStandsUp();
     void XBotFlipKick();
+    void XBotWalking();
+    void XBotVictoryDance();
 
     // YBot Events
     void StartAnimationYBotEvent();
@@ -33,6 +35,7 @@ protected:
     void EndOfAnimation();
     void PauseAnimation();
     void UnpauseAnimation();
+    void ResetAnimation();
 
     // Loading animations
     void LoadAnimationForBall();
@@ -62,9 +65,6 @@ protected:
 
     // YBotIndicator
     FlowerEngine::Graphics::RenderObject mYBotIndicator;
-
-    // Refence Point
-    FlowerEngine::Graphics::RenderObject mCube;
 
     //Ground
     FlowerEngine::Graphics::RenderObject mGround;
