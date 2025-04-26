@@ -56,3 +56,19 @@ void FPSCameraComponet::Update(float deltaTime)
         camera.Pitch(input->GetMouseMoveY() * turnSpeed);
     }
 }
+
+void FPSCameraComponet::Deserialize(const rapidjson::Value& value)
+{
+    if (value.HasMember("MoveSpeed"))
+    {
+        mMoveSpeed = value["MoveSpeed"].GetFloat();
+    }
+    if (value.HasMember("ShiftSpeed"))
+    {
+        mShiftSpeed = value["ShiftSpeed"].GetFloat();
+    }
+    if (value.HasMember("TurnSpeed"))
+    {
+        mTurnSpeed = value["TurnSpeed"].GetFloat();
+    }
+}

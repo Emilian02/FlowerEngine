@@ -9,6 +9,7 @@ namespace FlowerEngine
         Transform,      // transform component for location data
         Camera,         // contains the Camera for viewing
         FPSCamera,      // move the Camera with FPS controls
+        Mesh,           // adds a mesh shape to the game object
         Count           // last value, chain ids in custom components
     };
 
@@ -16,7 +17,8 @@ namespace FlowerEngine
     {
         Invalid,        // default value, not valid
         Camera,         // manages the cameras in the world
-        Count           // las value, chain ids in custom service
+        Render,         // renders render objects to the world
+        Count           // last value, chain ids in custom service
     };
 }
 
