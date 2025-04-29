@@ -35,7 +35,7 @@ namespace FlowerEngine
         {
             for (auto& service : mServices)
             {
-                if (service->GetTypedId() == ServiceType::StaticGetTypeId())
+                if (service->GetTypedId() == ServiceType::StaticGetTypedId())
                 {
                     return static_cast<ServiceType*>(service.get());
                 }
