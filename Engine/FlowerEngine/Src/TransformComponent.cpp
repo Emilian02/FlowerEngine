@@ -7,7 +7,10 @@ using namespace FlowerEngine::Graphics;
 void TransformComponent::DebugUI()
 {
     ImGui::DragFloat3("Position", &position.x, 0.1f);
-    ImGui::DragFloat4("Rotation", &rotation.x, 0.1f);
+    if (ImGui::DragFloat4("Rotation", &rotation.x, 0.1f))
+    {
+        rotation = Math::Quaternion::Normalize(rotation);
+    }
     ImGui::DragFloat3("Scale", &scale.x, 0.1f);
 
     SimpleDraw::AddTransform(GetMatrix4());
@@ -33,8 +36,8 @@ void TransformComponent::Deserialize(const rapidjson::Value& value)
     if (value.HasMember("Scale"))
     {
         const auto& s = value["Scale"].GetArray();
-         scale.x = s[0].GetFloat();
-         scale.y = s[1].GetFloat();
-         scale.z = s[2].GetFloat();
+        scale.x = s[0].GetFloat();
+        scale.y = s[1].GetFloat();
+        scale.z = s[2].GetFloat();
     }
 }

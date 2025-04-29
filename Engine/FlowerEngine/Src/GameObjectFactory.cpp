@@ -8,7 +8,10 @@
 #include "CameraComponent.h"
 #include "FPSCameraComponent.h"
 #include "TransformComponent.h"
-#include "MeshComponent.h"
+#include "MeshComponent.h"#
+#include "ModelComponent.h"
+#include "AnimatorComponent.h"
+#include "RigidBodyComponent.h"
 
 using namespace FlowerEngine;
 
@@ -33,6 +36,18 @@ namespace
         {
             newComponent = gameObject.AddComponent<MeshComponent>();
         }
+        else if (componentName == "ModelComponent")
+        {
+            newComponent = gameObject.AddComponent<ModelComponent>();
+        }
+        else if (componentName == "AnimatorComponent")
+        {
+            newComponent = gameObject.AddComponent<AnimatorComponent>();
+        }
+        else if (componentName == "RigidBodyComponent")
+        {
+            newComponent = gameObject.AddComponent<RigidBodyComponent>();
+        }
         else
         {
             ASSERT(false, "GameObjectFactory: component [%s] is not valid", componentName.c_str());
@@ -40,7 +55,47 @@ namespace
 
         return newComponent;
     }
+
+    Component* GetComponent(const std::string& componentName, GameObject& gameObject)
+    {
+        Component* component = nullptr;
+        if (componentName == "CameraComponent")
+        {
+            component = gameObject.GetComponent<CameraComponent>();
+        }
+        else if (componentName == "FPSCameraComponent")
+        {
+            component = gameObject.GetComponent<FPSCameraComponet>();
+        }
+        else if (componentName == "TransformComponent")
+        {
+            component = gameObject.GetComponent<TransformComponent>();
+        }
+        else if (componentName == "MeshComponent")
+        {
+            component = gameObject.GetComponent<MeshComponent>();
+        }
+        else if (componentName == "ModelComponent")
+        {
+            component = gameObject.AddComponent<ModelComponent>();
+        }
+        else if (componentName == "AnimatorComponent")
+        {
+            component = gameObject.AddComponent<AnimatorComponent>();
+        }
+        else if (componentName == "RigidBodyComponent")
+        {
+            component = gameObject.AddComponent<RigidBodyComponent>();
+        }
+        else
+        {
+            ASSERT(false, "GameObjectFactory: component [%s] is not valid", componentName.c_str());
+        }
+
+        return component;
+    }
 }
+
 
 void GameObjectFactory::Make(const std::filesystem::path& templatePath, GameObject& gameObject, GameWorld& gameWorld)
 {
@@ -64,6 +119,22 @@ void GameObjectFactory::Make(const std::filesystem::path& templatePath, GameObje
         if (newComponent != nullptr)
         {
             newComponent->Deserialize(component.value);
+        }
+    }
+}
+
+void GameObjectFactory::OverrideDeserialize(const rapidjson::Value& value, GameObject& gameObject)
+{
+    if (value.HasMember("Components"))
+    {
+        auto components = value["Components"].GetObj();
+        for (auto& component : components)
+        {
+            Component* ownedComponent = GetComponent(component.name.GetString(), gameObject);
+            if (ownedComponent != nullptr)
+            {
+                ownedComponent->Deserialize(component.value);
+            }
         }
     }
 }

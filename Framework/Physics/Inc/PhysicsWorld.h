@@ -32,6 +32,8 @@ namespace FlowerEngine::Physics
         void Register(PhysicsObject* physicsObject);
         void Unregister(PhysicsObject* physicsObject);
 
+        const Settings& GetSettings() const;
+        void UpdateSettigs(const Settings& settings);
         void SetGravity(const Math::Vector3& gravity);
 
     private:

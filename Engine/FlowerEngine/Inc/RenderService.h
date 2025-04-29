@@ -22,6 +22,8 @@ namespace FlowerEngine
         void Register(const RenderObjectComponent* renderObjectComponent);
         void Unregister(const RenderObjectComponent* renderObjectComponent);
 
+        void Deserialize(const rapidjson::Value& value) override;
+
     private:
         const CameraService* mCameraService = nullptr;
 

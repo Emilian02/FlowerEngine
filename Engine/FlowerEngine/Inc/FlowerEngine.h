@@ -13,6 +13,7 @@
 #include "GameObject.h"
 #include "GameWorld.h"
 #include "GameObjectFactory.h"
+#include "ModelComponent.h"
 
 //Components
 #include "Component.h"
@@ -21,11 +22,14 @@
 #include "FPSCameraComponent.h"
 #include "RenderObjectComponent.h"
 #include "MeshComponent.h"
+#include "AnimatorComponent.h"
+#include "RigidBodyComponent.h"
 
 //Services
 #include "Service.h"
 #include "CameraService.h"
 #include "RenderService.h"
+#include "PhysicsService.h"
 
 namespace FlowerEngine
 {

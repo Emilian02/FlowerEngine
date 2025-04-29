@@ -146,6 +146,16 @@ void PhysicsWorld::Unregister(PhysicsObject* physicsObject)
     }
 }
 
+const PhysicsWorld::Settings& PhysicsWorld::GetSettings() const
+{
+    return mSettings;
+}
+
+void PhysicsWorld::UpdateSettigs(const Settings& settings)
+{
+    mSettings = settings;
+}
+
 void PhysicsWorld::SetGravity(const Math::Vector3& gravity)
 {
     mSettings.gravity = gravity;
