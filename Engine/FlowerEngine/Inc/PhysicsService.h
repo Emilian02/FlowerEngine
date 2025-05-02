@@ -12,7 +12,7 @@ namespace FlowerEngine
         SET_TYPE_ID(ServiceId::Physics);
 
         void Update(float deltaTime) override;
-        void DebugUI() override;
+        void DebugUI();
 
         void Deserialize(const rapidjson::Value& value) override;
 

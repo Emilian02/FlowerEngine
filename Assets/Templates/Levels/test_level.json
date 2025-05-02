@@ -9,21 +9,27 @@
             "Ambient": [ 0.5, 0.5, 0.5, 1.0 ],
             "Diffuse": [ 0.7, 0.7, 0.7, 1.0 ],
             "Specular": [ 0.9, 0.9, 0.9, 1.0 ]
+        },
+        "PhysicsService": {
+
         }
     },
     "GameObjects": {
         "Camera": {
-            "Template":  "../../Assets/Templates/fps_camera.json"
-        },
-        "Object": {
-            "Template":  "../../Assets/Templates/mesh_obj.json"
-        },
-        "Object0": {
-            "Template": "../../Assets/Templates/model_obj.json",
-            "Components": {
-            }
+            "Template": "../../Assets/Templates/fps_camera.json"
         },
         "Object1": {
+            "Template": "../../Assets/Templates/mesh_obj.json",
+            "Components": {
+                "TransformComponent": {
+                    "Position": [ -2.0, 1.0, 0.0 ]
+                }
+            }
+        },
+        "Model": {
+            "Template": "../../Assets/Templates/model_obj.json"
+        },
+        "Object2": {
             "Template": "../../Assets/Templates/mesh_obj.json",
             "Components": {
                 "TransformComponent": {
@@ -32,7 +38,7 @@
             }
         },
         "Ground": {
-            "Template":  "../../Assets/Templates/ground_obj.json"
+            "Template": "../../Assets/Templates/ground_obj.json"
         }
-    }
+     }
 }

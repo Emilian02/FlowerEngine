@@ -77,15 +77,15 @@ namespace
         }
         else if (componentName == "ModelComponent")
         {
-            component = gameObject.AddComponent<ModelComponent>();
+            component = gameObject.GetComponent<ModelComponent>();
         }
         else if (componentName == "AnimatorComponent")
         {
-            component = gameObject.AddComponent<AnimatorComponent>();
+            component = gameObject.GetComponent<AnimatorComponent>();
         }
         else if (componentName == "RigidBodyComponent")
         {
-            component = gameObject.AddComponent<RigidBodyComponent>();
+            component = gameObject.GetComponent<RigidBodyComponent>();
         }
         else
         {

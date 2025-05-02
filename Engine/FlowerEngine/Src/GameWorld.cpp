@@ -154,7 +154,7 @@ void GameWorld::LoadLevel(const std::filesystem::path& levelFile)
         }
         else
         {
-            ASSERT(newService != nullptr, "GameWorld: invalide service name %s", serviceName.c_str());
+            ASSERT(newService != nullptr, "GameWorld: invalid service name %s", serviceName.c_str());
         }
 
         newService->Deserialize(service.value);

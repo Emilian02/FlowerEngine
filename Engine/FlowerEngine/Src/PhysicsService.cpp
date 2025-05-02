@@ -1,6 +1,8 @@
 #include "Precompiled.h"
 #include "PhysicsService.h"
 
+#include "RigidBodyComponent.h"
+
 using namespace FlowerEngine;
 
 void PhysicsService::Update(float deltaTime)
@@ -32,7 +34,7 @@ void PhysicsService::Deserialize(const rapidjson::Value& value)
     }
     if (value.HasMember("SimSteps"))
     {
-        settings.simulateSteps = value["SimeSteps"].GetFloat();
+        settings.simulateSteps = value["SimSteps"].GetFloat();
     }
     if (value.HasMember("FixedTimeStep"))
     {
@@ -43,11 +45,12 @@ void PhysicsService::Deserialize(const rapidjson::Value& value)
 
 void PhysicsService::Register(RigidBodyComponent* rigidBodyComponent)
 {
-    Physics::PhysicsWorld::Get()->Register(&rigidBodyComponent->mRigigBody);
+    Physics::PhysicsWorld::Get()->Register(&rigidBodyComponent->mRigidBody);
 }
 
 void PhysicsService::Unregister(RigidBodyComponent* rigidBodyComponent)
 {
+    Physics::PhysicsWorld::Get()->Unregister(&rigidBodyComponent->mRigidBody);
 }
 
 void PhysicsService::SetEnabled(bool enabled)

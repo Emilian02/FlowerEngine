@@ -20,10 +20,12 @@
             }
         },
         "RigidBodyComponent": {
-            "Shape": "Hull",
             "Mass": 0.0,
-            "HalfExtents": [ 15.0, 1.0, 15.0 ],
-            "Origin":  [ 0.0, -1.0, 0.0 ]
+            "ColliderData": {
+                "Shape": "Hull",
+                "HalfExtents": [ 15.0, 1.0, 15.0 ],
+                "Origin": [ 0.0, -1.0, 0.0 ]
+            }
         }
     }
 }
