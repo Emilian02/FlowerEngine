@@ -21,6 +21,17 @@
                 "HalfExtents": [ 1.0, 1.0, 1.0 ],
                 "Origin": [ 0.0, 1.0, 0.0 ]
             }
+        },
+        "SoundEffectComponent": {
+            "FileName": "../../Assets/Sounds/photongun1.wav",
+            "Looping": false
+        },
+        "CustomDebugDrawComponent": {
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Color": [ 0.0, 1.0, 0.0, 1.0 ],
+            "Slices": 30,
+            "Rings": 30,
+            "Radius": 1
         }
     }
 }

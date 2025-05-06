@@ -8,6 +8,16 @@
 
 using namespace FlowerEngine;
 
+namespace 
+{
+    CustomeService TryAddService;
+}
+
+void GameWorld::SetCustomService(CustomeService customService)
+{
+    TryAddService = customService;
+}
+
 void GameWorld::Initialize(uint32_t capacity)
 {
     ASSERT(!mInitialized, "GameWorld: is already initialized");
@@ -154,6 +164,7 @@ void GameWorld::LoadLevel(const std::filesystem::path& levelFile)
         }
         else
         {
+            newService = TryAddService(serviceName, *this);
             ASSERT(newService != nullptr, "GameWorld: invalid service name %s", serviceName.c_str());
         }
 

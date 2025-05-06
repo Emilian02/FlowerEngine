@@ -24,6 +24,8 @@
 #include "MeshComponent.h"
 #include "AnimatorComponent.h"
 #include "RigidBodyComponent.h"
+#include "SoundEffectComponent.h"
+#include "SoundBankComponent.h"
 
 //Services
 #include "Service.h"

@@ -18,6 +18,33 @@
             "Textures": {
                 "DiffuseMap": "../../Assets/Images/planets/earth/earth.jpg"
             }
+        },
+        "SoundBankComponent": {
+            "SoundEffects": {
+                "Blast": {
+                    "FileName": "../../Assets/Sounds/megamanx_blast.wav",
+                    "Looping": false
+                },
+                "Title": {
+                    "FileName": "../../Assets/Sounds/megamanx_title.wav",
+                    "Looping": true
+                },
+                "Eagle": {
+                    "FileName": "../../Assets/Sounds/megamanx_storm_eagle.wav",
+                    "Looping": false
+                },
+                "Mandrill": {
+                    "FileName": "../../Assets/Sounds/megamanx_spark_mandrill.wav",
+                    "Looping": true
+                }
+            }
+        },
+        "CustomDebugDrawComponent": {
+            "Position": [ 0.0, 0.0, 0.0 ],
+            "Color": [ 0.0, 1.0, 0.0, 1.0 ],
+            "Slices": 30,
+            "Rings": 30,
+            "Radius": 1
         }
     }
 }

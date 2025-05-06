@@ -6,9 +6,13 @@
 
 namespace FlowerEngine
 {
+    using CustomeService = std::function<Service* (const std::string&, GameWorld&)>;
+
     class GameWorld final
     {
     public:
+        static void SetCustomService(CustomeService customService);
+
         void Initialize(uint32_t capacity = 10);
         void Termiante();
         void Update(float deltaTime);

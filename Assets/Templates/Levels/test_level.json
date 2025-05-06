@@ -12,6 +12,9 @@
         },
         "PhysicsService": {
 
+        },
+        "CustomDebugDrawService": {
+
         }
     },
     "GameObjects": {
@@ -40,5 +43,5 @@
         "Ground": {
             "Template": "../../Assets/Templates/ground_obj.json"
         }
-     }
+    }
 }
