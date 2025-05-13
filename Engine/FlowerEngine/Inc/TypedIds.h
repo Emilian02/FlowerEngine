@@ -15,6 +15,9 @@ namespace FlowerEngine
         RigidBody,      // adds a physics body shape to the game object
         SoundEffect,    // adds a sound effect to the object
         SoundBank,      // adds a group of sound effects to an object
+        UIText,         // adds a UI text component
+        UISprite,       // adds a sprite to the UI
+        UIButton,       // adds a button to the UI
         Count           // last value, chain ids in custom components
     };
 
@@ -24,6 +27,7 @@ namespace FlowerEngine
         Camera,         // manages the cameras in the world
         Render,         // renders render objects to the world
         Physics,        // manages the physics system in the world
+        UIRender,       // renders UI objects to the world
         Count           // last value, chain ids in custom service
     };
 }

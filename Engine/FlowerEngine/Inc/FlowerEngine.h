@@ -26,12 +26,14 @@
 #include "RigidBodyComponent.h"
 #include "SoundEffectComponent.h"
 #include "SoundBankComponent.h"
+#include "UIComponent.h"
 
 //Services
 #include "Service.h"
 #include "CameraService.h"
 #include "RenderService.h"
 #include "PhysicsService.h"
+#include "UIRenderService.h"
 
 namespace FlowerEngine
 {

@@ -14,6 +14,7 @@
 #include "RigidBodyComponent.h"
 #include "SoundEffectComponent.h"
 #include "SoundBankComponent.h"
+#include "UITextComponent.h"
 
 using namespace FlowerEngine;
 
@@ -60,6 +61,10 @@ namespace
         else if (componentName == "SoundBankComponent")
         {
             newComponent = gameObject.AddComponent<SoundBankComponent>();
+        }
+        else if (componentName == "UITextComponent")
+        {
+            newComponent = gameObject.AddComponent<UITextComponent>();
         }
         else
         {
@@ -108,6 +113,10 @@ namespace
         else if (componentName == "SoundBankComponent")
         {
             component = gameObject.GetComponent<SoundBankComponent>();
+        }
+        else if (componentName == "UITextComponent")
+        {
+            component = gameObject.GetComponent<UITextComponent>();
         }
         else
         {
