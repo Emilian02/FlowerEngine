@@ -1,0 +1,29 @@
+{
+    "Components": {
+        "UISpriteComponent": {
+            "Texture": "../../Assets/Images/sprite/cyan.jpg",
+            "Position": [ 500.0, 20.0 ],
+            "Pivot": "Top"
+        }
+    },
+    "Children": {
+        "Button0": {
+            "Template": "../../Assets/Templates/UI/test_button.json",
+            "Components": {
+                "UIButtonComponent": {
+                    "Posistion": [ 250.0, 20.0 ],
+                    "Pivot": "Top"
+                }
+            }
+        },
+        "Button": {
+            "Template": "../../Assets/Templates/UI/test_button.json",
+            "Components": {
+                "UIButtonComponent": {
+                    "Posistion": [ 400.0, 20.0 ],
+                    "Pivot": "Top"
+                }
+            }
+        }
+    }
+}

@@ -54,7 +54,7 @@ namespace FlowerEngine::Math
 
         static Quaternion CreateFromAxisAngle(const Vector3& axis, float angle) noexcept;
         static Quaternion CreateFromYawPitchRoll(float yaw, float pitch, float roll) noexcept;
-        static Quaternion CreateFromRtoationMatrix(const Matrix4& m) noexcept;
+        static Quaternion CreateFromRotationMatrix(const Matrix4& m) noexcept;
 
         static Quaternion Lerp(const Quaternion& q0, const Quaternion& q1, float t);
         static Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);

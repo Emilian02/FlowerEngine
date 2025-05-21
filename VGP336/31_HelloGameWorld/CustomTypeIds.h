@@ -10,5 +10,5 @@ enum class CustomComponentId
 enum class CustomServiceId
 {
     CustomDebugDrawDisplay = static_cast<uint32_t>(FlowerEngine::ServiceId::Count),
-    CustomTimer = static_cast<uint32_t>(FlowerEngine::ServiceId::Count) + 1
+    CustomTimerDisplay = static_cast<uint32_t>(FlowerEngine::ServiceId::Count) + 1
 };

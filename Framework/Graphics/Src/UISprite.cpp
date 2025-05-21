@@ -37,7 +37,7 @@ void UISprite::SetRect(uint32_t top, uint32_t left, uint32_t right, uint32_t bot
 {
     mRect.top = top;
     mRect.left = left;
-    mRect.top = top;
+    mRect.right = right;
     mRect.bottom = bottom;
 }
 
