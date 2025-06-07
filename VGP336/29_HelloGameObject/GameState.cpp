@@ -17,7 +17,7 @@ void GameState::Initialize()
 
     GameObject* cameraGO = mGameWorld.CreateGameObject("Camera");
     CameraComponent* cameraComponent = cameraGO->AddComponent<CameraComponent>();
-    cameraGO->AddComponent<FPSCameraComponet>();
+    cameraGO->AddComponent<FPSCameraComponent>();
     cameraComponent->GetCamera().SetPosition({ 0.0f, 2.0f, -5.0f });
     cameraComponent->GetCamera().SetLookAt({ 0.0f, 1.0f, 0.0f });
     cameraGO->Initialize();

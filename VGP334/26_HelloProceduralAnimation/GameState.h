@@ -23,6 +23,8 @@ protected:
     FlowerEngine::Physics::RigidBody mGroundRB;
     FlowerEngine::Physics::CollisionShape mGroundShape;
 
+    FlowerEngine::GameWorld mGameWorld;
+
     struct BodyPart
     {
         FlowerEngine::Graphics::RenderObject segment;

@@ -44,6 +44,12 @@ void ModelComponent::Deserialize(const rapidjson::Value& value)
     }
 }
 
+
+void ModelComponent::Serialize(rapidjson::Document& doc, rapidjson::Value& value, const rapidjson::Value& original)
+{
+
+}
+
 Graphics::ModelId ModelComponent::GetModelId() const
 {
     return mModelId;

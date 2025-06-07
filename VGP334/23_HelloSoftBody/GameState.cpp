@@ -9,6 +9,7 @@ using namespace FlowerEngine::Physics;
 
 void GameState::Initialize()
 {
+    mGameWorld.AddService<PhysicsService>();
     mCamera.SetPosition({ 0.0f, 5.0f, -7.0f });
     mCamera.SetLookAt({ 0.0f, 1.0f, 0.0f });
     mCamera.SetAspectRatio(0.0f);
@@ -102,11 +103,13 @@ void GameState::Terminate()
     mBallShape.Terminate();
     mBall.Terminate();
     mStandardEffect.Terminate();
+    mGameWorld.Termiante();
 }
 
 void GameState::Update(float deltaTime)
 {
     UpdateCamera(deltaTime);
+    mGameWorld.Update(deltaTime);
 
     if (InputSystem::Get()->IsKeyPressed(KeyCode::SPACE))
     {

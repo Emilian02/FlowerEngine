@@ -9,6 +9,7 @@ using namespace FlowerEngine::Audio;
 
 void GameState::Initialize()
 {
+    mGameWorld.AddService<PhysicsService>();
     mCamera.SetPosition({ 0.0f, 2.0f, -5.0f });
     mCamera.SetLookAt({ 0.0f, 1.0f, 0.0f });
     mCamera.SetAspectRatio(0.0f);
@@ -58,11 +59,13 @@ void GameState::Terminate()
     mGroundShape.Terminate();
     mGround.Terminate();
     mStandardEffect.Terminate();
+    mGameWorld.Termiante();
 }
 
 void GameState::Update(float deltaTime)
 {
     UpdateCamera(deltaTime);
+    mGameWorld.Update(deltaTime);
 
     InputSystem* input = InputSystem::Get();
     const float speed = 10.0f;

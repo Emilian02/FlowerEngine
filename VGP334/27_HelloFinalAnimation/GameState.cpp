@@ -10,6 +10,7 @@ using namespace FlowerEngine::Physics;
 
 void GameState::Initialize()
 {
+    mGameWorld.AddService<PhysicsService>();
     mCamera.SetPosition({ 0.0f, 0.0f, 0.0f });
     mCamera.SetLookAt({ 0.0f, 0.0f, 0.0f });
     mCamera.SetAspectRatio(0.0f);
@@ -274,6 +275,7 @@ void GameState::Terminate()
     mParticleSystemEffect.Terminate();
     mParticleSystem.Terminate();
     mStandardEffect.Terminate();
+    mGameWorld.Termiante();
 }
 
 void GameState::Update(float deltaTime)
@@ -332,6 +334,7 @@ void GameState::Update(float deltaTime)
 
         mCamera.SetPosition(mCameraAnimationPosition.GetTransform(mAnimationTime).position);
         mCamera.SetLookAt(mCameraAnimationLookAt.GetTransform(mAnimationTime).position);
+        mGameWorld.Update(deltaTime);
     }
 
     if (input->IsKeyPressed(KeyCode::P))
@@ -459,7 +462,7 @@ void GameState::StartAnimationYBotEvent()
 
 void GameState::YBotLaughingSitting()
 {
-    mYBotAnimator.PlayAnimation(2, true);
+    mYBotAnimator.PlayAnimation(1, true);
 }
 
 void GameState::EndOfAnimation()

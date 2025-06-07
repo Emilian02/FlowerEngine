@@ -34,6 +34,8 @@ protected:
     FlowerEngine::Graphics::Mesh mClothMesh;
     FlowerEngine::Physics::SoftBody mClothSoftBody;
 
+    FlowerEngine::GameWorld mGameWorld;
+
     // box info
     struct BoxData
     {

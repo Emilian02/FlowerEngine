@@ -23,7 +23,7 @@ namespace FlowerEngine
         virtual void DebugUI() {}
 
         // saving data to a file
-        virtual void Serialize(rapidjson::Document& doc, rapidjson::Value& value) {}
+        virtual void Serialize(rapidjson::Document& doc, rapidjson::Value& value, const rapidjson::Value& orirginal) {}
         // reading data from a file
         virtual void Deserialize(const rapidjson::Value& value) {}
 

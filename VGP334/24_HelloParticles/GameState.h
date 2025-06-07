@@ -18,4 +18,5 @@ protected:
     FlowerEngine::Graphics::Camera mCamera;
     FlowerEngine::Graphics::ParticleSystemEffect mParticleSystemEffect;
     FlowerEngine::Physics::ParticleSystem mParticleSystem;
+    FlowerEngine::GameWorld mGameWorld;
 };

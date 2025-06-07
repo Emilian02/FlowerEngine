@@ -6,7 +6,7 @@ namespace FlowerEngine
 {
     class CameraComponent;
 
-    class FPSCameraComponet final : public Component
+    class FPSCameraComponent final : public Component
     {
     public:
         SET_TYPE_ID(ComponentId::FPSCamera);
@@ -15,6 +15,7 @@ namespace FlowerEngine
         void Terminate() override;
         void Update(float deltaTime) override;
         void Deserialize(const rapidjson::Value& value) override;
+        void Serialize(rapidjson::Document& doc, rapidjson::Value& value, const rapidjson::Value& original) override;
 
     private:
         CameraComponent* mCameraComponent = nullptr;

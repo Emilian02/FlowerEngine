@@ -34,7 +34,7 @@ namespace
         }
         else if (componentName == "FPSCameraComponent")
         {
-            newComponent = gameObject.AddComponent<FPSCameraComponet>();
+            newComponent = gameObject.AddComponent<FPSCameraComponent>();
         }
         else if (componentName == "TransformComponent")
         {
@@ -94,7 +94,7 @@ namespace
         }
         else if (componentName == "FPSCameraComponent")
         {
-            component = gameObject.GetComponent<FPSCameraComponet>();
+            component = gameObject.GetComponent<FPSCameraComponent>();
         }
         else if (componentName == "TransformComponent")
         {

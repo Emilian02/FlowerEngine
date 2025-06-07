@@ -52,7 +52,7 @@ namespace FlowerEngine::Graphics
             int useShadowMap = 1;
             int useSkinning = 1;
             float bumpWeight = 0.01f;
-            float depthBias = 0.000003f;
+            float depthBias = 0.00003f;
         };
 
         using TransformBuffer = TypedConstantBuffer<TransformData>;

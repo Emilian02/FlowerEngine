@@ -25,7 +25,7 @@ const char* gTextures[] =
      "../../Assets/Images/Planets/sun.jpg",
      "../../Assets/Images/Planets/mercury.jpg",
      "../../Assets/Images/Planets/venus.jpg",
-     "../../Assets/Images/Planets/earth.jpg",
+     "../../Assets/Images/Planets/earth/earth.jpg",
      "../../Assets/Images/Planets/mars.jpg",
      "../../Assets/Images/Planets/jupiter.jpg",
      "../../Assets/Images/Planets/saturn.jpg",

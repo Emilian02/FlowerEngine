@@ -29,6 +29,8 @@ protected:
     FlowerEngine::Physics::CollisionShape mGroundShape;
     FlowerEngine::Physics::RigidBody mGroundRB;
 
+    FlowerEngine::GameWorld mGameWorld;
+
     struct BoxData
     {
         FlowerEngine::Graphics::RenderObject box;

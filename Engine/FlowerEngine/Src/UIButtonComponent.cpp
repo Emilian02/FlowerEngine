@@ -111,15 +111,15 @@ void UIButtonComponent::Deserialize(const rapidjson::Value& value)
     {
         Pivot buttonPivot = Pivot::TopLeft;
         std::string pivot = value["Pivot"].GetString();
-        if (pivot == "TopLeft") { buttonPivot = Pivot::TopLeft; }
-        else if (pivot == "Top") { buttonPivot = Pivot::Top; }
-        else if (pivot == "TopRight") { buttonPivot = Pivot::TopRight; }
-        else if (pivot == "Left") { buttonPivot = Pivot::Left; }
-        else if (pivot == "Center") { buttonPivot = Pivot::Center; }
-        else if (pivot == "Right") { buttonPivot = Pivot::Right; }
-        else if (pivot == "BottomLeft") { buttonPivot = Pivot::BottomLeft; }
-        else if (pivot == "Bottom") { buttonPivot = Pivot::Bottom; }
-        else if (pivot == "BottomRight") { buttonPivot = Pivot::BottomRight; }
+        if (pivot == "TopLeft")             { buttonPivot = Pivot::TopLeft; }
+        else if (pivot == "Top")            { buttonPivot = Pivot::Top; }
+        else if (pivot == "TopRight")       { buttonPivot = Pivot::TopRight; }
+        else if (pivot == "Left")           { buttonPivot = Pivot::Left; }
+        else if (pivot == "Center")         { buttonPivot = Pivot::Center; }
+        else if (pivot == "Right")          { buttonPivot = Pivot::Right; }
+        else if (pivot == "BottomLeft")     { buttonPivot = Pivot::BottomLeft; }
+        else if (pivot == "Bottom")         { buttonPivot = Pivot::Bottom; }
+        else if (pivot == "BottomRight")    { buttonPivot = Pivot::BottomRight; }
         else { ASSERT(false, "UISpriteComponent: invalid pivot %s", pivot.c_str()); }
 
         for (ButtonStateEntry& b : mButtonStates)

@@ -91,6 +91,8 @@ protected:
     FlowerEngine::Graphics::Animation mCameraAnimationPosition;
     FlowerEngine::Graphics::Animation mCameraAnimationLookAt;
 
+    FlowerEngine::GameWorld mGameWorld;
+
     //Animation Time
     float mAnimationTime = 0.0f;
 };
