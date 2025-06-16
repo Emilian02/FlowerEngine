@@ -16,6 +16,7 @@
 #include "ModelComponent.h"
 
 //Components
+#include "AIComponent.h"
 #include "Component.h"
 #include "TransformComponent.h"
 #include "CameraComponent.h"
@@ -32,6 +33,7 @@
 
 //Services
 #include "Service.h"
+#include "AIService.h"
 #include "CameraService.h"
 #include "RenderService.h"
 #include "PhysicsService.h"

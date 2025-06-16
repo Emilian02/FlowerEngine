@@ -55,6 +55,21 @@ namespace FlowerEngine::Math
         return sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
     }
 
+    inline Vector3 ClampMagnitude(const Vector3& v, float min, float max)  
+    {  
+        float mag = Magnitude(v);
+        if (mag == 0)
+        {
+            return v;
+        }
+
+        float clamp = Clamp(mag, min, max);
+
+        Vector3 result = v * (clamp / mag);
+
+        return result;
+    }
+
     inline float DistanceSqr(Vector3 a, Vector3 b)
     {
         return abs((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));

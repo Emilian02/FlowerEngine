@@ -120,6 +120,12 @@
     <ClInclude Include="Inc\SaveUtil.h">
       <Filter>Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\AIService.h">
+      <Filter>Inc\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\AIComponent.h">
+      <Filter>Inc\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Precompiled.cpp">
@@ -196,6 +202,12 @@
     </ClCompile>
     <ClCompile Include="Src\SaveUtil.cpp">
       <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\AIService.cpp">
+      <Filter>Src\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\AIComponent.cpp">
+      <Filter>Src\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

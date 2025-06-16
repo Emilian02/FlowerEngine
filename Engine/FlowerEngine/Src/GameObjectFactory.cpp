@@ -17,6 +17,7 @@
 #include "UITextComponent.h"
 #include "UISpriteComponent.h"
 #include "UIButtonComponent.h"
+#include "AIComponent.h"
 
 using namespace FlowerEngine;
 
@@ -75,6 +76,10 @@ namespace
         else if (componentName == "UIButtonComponent")
         {
             newComponent = gameObject.AddComponent<UIButtonComponent>();
+        }
+        else if (componentName == "AIComponent")
+        {
+            newComponent = gameObject.AddComponent<AIComponent>();
         }
         else
         {
@@ -135,6 +140,10 @@ namespace
         else if (componentName == "UIButtonComponent")
         {
             component = gameObject.GetComponent<UIButtonComponent>();
+        }
+        else if (componentName == "AIComponent")
+        {
+            component = gameObject.GetComponent<AIComponent>();
         }
         else
         {

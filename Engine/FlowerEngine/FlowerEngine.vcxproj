@@ -135,6 +135,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Inc\AIComponent.h" />
+    <ClInclude Include="Inc\AIService.h" />
     <ClInclude Include="Inc\AnimatorComponent.h" />
     <ClInclude Include="Inc\App.h" />
     <ClInclude Include="Inc\AppState.h" />
@@ -170,6 +172,8 @@
     <ClInclude Include="Src\Precompiled.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\AIComponent.cpp" />
+    <ClCompile Include="Src\AIService.cpp" />
     <ClCompile Include="Src\AnimatorComponent.cpp" />
     <ClCompile Include="Src\App.cpp" />
     <ClCompile Include="Src\CameraComponent.cpp" />
@@ -200,6 +204,9 @@
     <ClCompile Include="Src\UITextComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Framework\AI\AI.vcxproj">
+      <Project>{078e8620-b470-42e8-b518-ad7236aef21c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Framework\Audio\Audio.vcxproj">
       <Project>{25c62776-ef57-46a0-894a-6ea8ed7ca3a3}</Project>
     </ProjectReference>

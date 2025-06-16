@@ -18,6 +18,7 @@ namespace FlowerEngine
         UIText,         // adds a UI text component
         UISprite,       // adds a sprite to the UI
         UIButton,       // adds a button to the UI
+        AI,             // adds an AI behavior on a game object
         Count           // last value, chain ids in custom components
     };
 
@@ -28,6 +29,7 @@ namespace FlowerEngine
         Render,         // renders render objects to the world
         Physics,        // manages the physics system in the world
         UIRender,       // renders UI objects to the world
+        AI,             // manages AI in the game world
         Count           // last value, chain ids in custom service
     };
 }

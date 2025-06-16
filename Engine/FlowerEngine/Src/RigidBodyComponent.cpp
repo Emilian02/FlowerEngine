@@ -93,3 +93,8 @@ void RigidBodyComponent::SetVelocity(const Math::Vector3& velocity)
 {
     mRigidBody.SetVelocity(velocity);
 }
+
+float RigidBodyComponent::GetMass()
+{
+    return mMass;
+}

@@ -6,6 +6,7 @@
 #include "RenderService.h"
 #include "PhysicsService.h"
 #include "UIRenderService.h"
+#include "AIService.h"
 
 using namespace FlowerEngine;
 
@@ -166,6 +167,10 @@ void GameWorld::LoadLevel(const std::filesystem::path& levelFile)
         else if (serviceName == "UIRenderService")
         {
             newService = AddService<UIRenderService>();
+        }
+        else if (serviceName == "AIService")
+        {
+            newService = AddService<AIService>();
         }
         else
         {
