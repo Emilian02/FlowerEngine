@@ -31,9 +31,15 @@ void CameraComponent::Terminate()
 void CameraComponent::DebugUI()
 {
     Vector3 pos = mCamera.GetPosition();
+    Vector3 dir = mCamera.GetDirection();
     if (ImGui::DragFloat3("Position##Camera", &pos.x, 0.1f))
     {
         mCamera.SetPosition(pos);
+    }
+
+    if (ImGui::DragFloat3("Direction##Camera", &dir.x, 0.1f))
+    {
+        mCamera.SetDirection(dir);
     }
 }
 

@@ -21,17 +21,18 @@ namespace FlowerEngine
         const AI::EntityPtrs& GetAIEntities() const;
         uint32_t GetNextAIId();
 
-        void SpawnAgent();
+        /*void SpawnAgent();
         void KillAgent();
 
         std::vector<std::unique_ptr<AIComponent>>& GetAgents();
-        const std::vector<std::unique_ptr<AIComponent>>& GetAgents() const;
+        const std::vector<std::unique_ptr<AIComponent>>& GetAgents() const;*/
 
         AI::AIWorld& GetAIWorld();
         const AI::AIWorld& GetAIWorld() const;
 
     private:
-        std::vector<std::unique_ptr<AIComponent>> scvAgents;
+        /*using SCVAgents = std::vector<std::unique_ptr<AIComponent>>;
+        SCVAgents scvAgents;*/
         AI::AIWorld mAIWorld;
     };
 }

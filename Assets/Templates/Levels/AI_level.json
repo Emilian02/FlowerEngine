@@ -1,0 +1,31 @@
+{
+    "Capacity": 100,
+    "Services": {
+        "CameraService": {
+
+        },
+        "RenderService": {
+            "Direction": [ 1.0, -1.0, 1.0 ],
+            "Ambient": [ 0.5, 0.5, 0.5, 1.0 ],
+            "Diffuse": [ 0.7, 0.7, 0.7, 1.0 ],
+            "Specular": [ 0.9, 0.9, 0.9, 1.0 ]
+        },
+        "PhysicsService": {
+
+        },
+        "AIService": {
+
+        }
+    },
+    "GameObjects": {
+        "Camera": {
+            "Template": "../../Assets/Templates/look_down_camera.json"
+        },
+        "Ground": {
+            "Template": "../../Assets/Templates/ground_obj.json"
+        },
+        "AIModel": {
+            "Template": "../../Assets/Templates/ai_model_obj.json"
+        }
+    }
+}

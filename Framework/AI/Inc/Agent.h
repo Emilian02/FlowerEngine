@@ -17,7 +17,7 @@ namespace FlowerEngine::AI
         std::vector<const Agent*> neighbors;
         Math::Vector3 destination = Math::Vector3::Zero;
         Math::Vector3 velocity = Math::Vector3::Zero;
-        float maxSpeed = 100.0f;
+        float maxSpeed = 5.0f;
         float mass = 1.0f;
     };
 }

@@ -18,6 +18,7 @@ void AIWorld::Register(Entity* entity)
 {
     ASSERT(std::find(mEntities.begin(), mEntities.end(), entity) == mEntities.end(),
         "AIWorld: entity is already added");
+    mEntities.push_back(entity);
 }
 
 void AIWorld::Unregister(Entity* entity)

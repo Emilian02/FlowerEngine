@@ -4,6 +4,8 @@
 
 namespace FlowerEngine
 {
+    class TransformComponent;
+    class RigidBodyComponent;
     class AIComponent : public Component
     {
     public:
@@ -30,10 +32,22 @@ namespace FlowerEngine
         const AI::Agent* GetAgent() const;
 
     private:
-        std::unique_ptr<AI::Agent> mAgent = nullptr;
+        AI::Agent* mAgent = nullptr;
         std::unique_ptr<AI::SteeringModule> mSteeringModule = nullptr;
         AI::SeekBehavior* mSeekBehavior = nullptr;
         AI::FleeBehavior* mFleeBehavior = nullptr;
         AI::ArriveBehavior* mArriveBehavior = nullptr;
+        RigidBodyComponent* mRigidBody = nullptr;
+        TransformComponent* mTransform = nullptr;
+
+        Math::Vector3 mTarget = Math::Vector3::Zero;
+
+        bool mActiveSeek = false;
+        bool mActiveFlee = false;
+        bool mActiveArrive = false;
+
+        float mWeightSeek = 1.0f;
+        float mWeightFlee = 1.0f;
+        float mWeightArrive = 1.0f;
     };
 }
