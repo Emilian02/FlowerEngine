@@ -6,7 +6,13 @@
             "Scale": [ 1.0, 1.0, 1.0 ]
         },
         "ModelComponent": {
-            "FileName": "../../Assets/Models/Character04/XBot.model"
+            "FileName": "../../Assets/Models/Character04/XBot.model",
+            "Animations": [
+                "../../Assets/Models/Character4/Walking.animset"
+            ]
+        },
+        "AnimatorComponent": {
+
         },
         "RigidBodyComponent": {
             "Mass": 1.0,
@@ -17,7 +23,7 @@
             }
         },
         "AIComponent": {
-            "Behavior":  ["Seek", "Flee", "Arrive"]
+            "Behavior": [ "Seek", "Flee", "Arrive" ]
         }
     }
 }
